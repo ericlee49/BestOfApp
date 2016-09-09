@@ -15,7 +15,7 @@
 		BE7A12BF1D6ECE09006F438C /* Establishment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12BE1D6ECE09006F438C /* Establishment.swift */; };
 		BE7A12C31D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12C21D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift */; };
 		BE7A12C51D701652006F438C /* EstablishmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12C41D701652006F438C /* EstablishmentTableViewCell.swift */; };
-		BE7A12C71D826F54006F438C /* SettingsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12C61D826F54006F438C /* SettingsCollectionViewController.swift */; };
+		BE7A12C71D826F54006F438C /* SettingsCollectionViewLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12C61D826F54006F438C /* SettingsCollectionViewLauncher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +41,7 @@
 		BE7A12BE1D6ECE09006F438C /* Establishment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Establishment.swift; sourceTree = "<group>"; };
 		BE7A12C21D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EstablishmentsInCategoryTableViewController.swift; path = ../EstablishmentsInCategoryTableViewController.swift; sourceTree = "<group>"; };
 		BE7A12C41D701652006F438C /* EstablishmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EstablishmentTableViewCell.swift; sourceTree = "<group>"; };
-		BE7A12C61D826F54006F438C /* SettingsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCollectionViewController.swift; sourceTree = "<group>"; };
+		BE7A12C61D826F54006F438C /* SettingsCollectionViewLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCollectionViewLauncher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +86,7 @@
 				BE7A12C21D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift */,
 				BE7A12C41D701652006F438C /* EstablishmentTableViewCell.swift */,
 				BE7A129E1D6D6799006F438C /* AppDelegate.swift */,
-				BE7A12C61D826F54006F438C /* SettingsCollectionViewController.swift */,
+				BE7A12C61D826F54006F438C /* SettingsCollectionViewLauncher.swift */,
 				BE7A12A01D6D6799006F438C /* CategoryViewController.swift */,
 				BE7A12BE1D6ECE09006F438C /* Establishment.swift */,
 				BE7A12A51D6D6799006F438C /* Assets.xcassets */,
@@ -208,7 +208,7 @@
 				BE7A12A11D6D6799006F438C /* CategoryViewController.swift in Sources */,
 				BE7A12BF1D6ECE09006F438C /* Establishment.swift in Sources */,
 				BE7A129F1D6D6799006F438C /* AppDelegate.swift in Sources */,
-				BE7A12C71D826F54006F438C /* SettingsCollectionViewController.swift in Sources */,
+				BE7A12C71D826F54006F438C /* SettingsCollectionViewLauncher.swift in Sources */,
 				BE7A12C51D701652006F438C /* EstablishmentTableViewCell.swift in Sources */,
 				BE7A12C31D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift in Sources */,
 			);

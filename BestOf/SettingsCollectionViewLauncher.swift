@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SettingsCollectionViewController {
+class SettingsCollectionViewLaucher: NSObject {
     
     let blackView = UIView()
     
@@ -20,13 +20,15 @@ class SettingsCollectionViewController {
             
             blackView.frame = window.frame
             
-            window.addSubview(blackView)
-            
             blackView.alpha = 0
             
+            blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismissSettingsView)))
             
-            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: { 
-                    self.blackView.alpha = 1
+            window.addSubview(blackView)
+        
+            
+            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+                self.blackView.alpha = 1
                 }, completion: nil  )
             
         }
@@ -34,4 +36,13 @@ class SettingsCollectionViewController {
     }
     
     
+    func handleDismissSettingsView() {
+        print("handling dismiss")
+        UIView.animateWithDuration(0.5) {
+            self.blackView.alpha = 0
+        }
+    }
+    
+    
 }
+

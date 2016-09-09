@@ -50,9 +50,10 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.rightBarButtonItem = settingsButton
     }
     
+    let settings = SettingsCollectionViewLaucher()
+    
     func showSettingsView() {
-        print(123)
-        let settings = SettingsCollectionViewController()
+        
         settings.showSettings()
         
     }
