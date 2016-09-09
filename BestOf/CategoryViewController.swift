@@ -38,6 +38,23 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         createCategories()
         
+        createNavigationBarSettingsButton()
+        
+        
+        
+    }
+    
+    func createNavigationBarSettingsButton() {
+        
+        let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(showSettingsView))
+        navigationItem.rightBarButtonItem = settingsButton
+    }
+    
+    func showSettingsView() {
+        print(123)
+        let settings = SettingsCollectionViewController()
+        settings.showSettings()
+        
     }
     
     func createCategories() {
