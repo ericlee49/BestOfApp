@@ -11,6 +11,25 @@ import UIKit
 class SettingsCell: UICollectionViewCell {
     
     
+    override var highlighted: Bool {
+        didSet {
+            backgroundColor = highlighted ? UIColor.darkGrayColor() : UIColor.whiteColor()
+            nameLabel.textColor = highlighted ? UIColor.whiteColor() : UIColor.blackColor()
+            iconImageView.tintColor = highlighted ? UIColor.whiteColor() : UIColor.darkGrayColor()
+        }
+    }
+    
+    var setting: Setting? {
+        didSet {
+            self.nameLabel.text = setting?.name
+            
+            if let iconImage = setting?.imageName {
+                self.iconImageView.image = UIImage(named: iconImage)?.imageWithRenderingMode(.AlwaysTemplate)
+
+            }
+            
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

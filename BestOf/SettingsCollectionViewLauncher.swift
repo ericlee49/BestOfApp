@@ -13,6 +13,10 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
     
     let cellId = "cellID"
     
+    let cellHeight: CGFloat = 60
+    
+    
+    
     let blackView = UIView()
     
     let collectionView: UICollectionView = {
@@ -24,6 +28,9 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
     }()
     
     
+    let settings: [Setting] = {
+        return [Setting(name: "Login", imageName: "account"), Setting(name: "Request a Category", imageName: "request"), Setting(name: "Request an Establishment", imageName: "question"), Setting(name: "Cancel", imageName: "cancel")]
+    }()
     
     
     func showSettings() {
@@ -43,7 +50,7 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
             
             
             // Collection View setup
-            let collectionViewHeight:CGFloat = 200
+            let collectionViewHeight:CGFloat = cellHeight * CGFloat(settings.count)
             let y_Position = window.frame.height - collectionViewHeight
             self.collectionView.frame = CGRectMake(0, window.frame.height, window.frame.width, collectionViewHeight)
             
@@ -77,16 +84,22 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
     // Delegate and Data Source For Collection View
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return settings.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId, forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId, forIndexPath: indexPath) as! SettingsCell
+        cell.setting = settings[indexPath.item]
         return cell
+        
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(collectionView.frame.width, 50)
+        return CGSizeMake(collectionView.frame.width, cellHeight)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 0
     }
     
     
