@@ -18,7 +18,7 @@ struct Categories {
 
 
 // MARK: CONTROLLER
-class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class CategoryCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var categoriesArray = [Categories]()
     

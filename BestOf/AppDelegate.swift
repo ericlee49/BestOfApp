@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         let flowLayout = UICollectionViewFlowLayout()
-        let viewController = ViewController(collectionViewLayout: flowLayout)
+        let viewController = CategoryCollectionViewController(collectionViewLayout: flowLayout)
         
         window?.rootViewController = UINavigationController(rootViewController: viewController)
 
