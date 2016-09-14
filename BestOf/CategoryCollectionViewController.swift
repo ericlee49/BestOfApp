@@ -22,7 +22,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     var categoriesArray = [Categories]()
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,7 +32,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         
         collectionView?.alwaysBounceVertical = true
         
-        collectionView?.registerClass(CustomCell.self, forCellWithReuseIdentifier: customCellIdentifier)
+        collectionView?.registerClass(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: customCellIdentifier)
         
         collectionView?.backgroundColor = UIColor.init(white: 0.9, alpha: 1)
         
@@ -40,23 +40,8 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         
         createNavigationBarSettingsButton()
         
-        
-        
     }
     
-    func createNavigationBarSettingsButton() {
-        
-        let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(showSettingsView))
-        navigationItem.rightBarButtonItem = settingsButton
-    }
-    
-    let settings = SettingsCollectionViewLaucher()
-    
-    func showSettingsView() {
-        
-        settings.showSettings()
-        
-    }
     
     func createCategories() {
         
@@ -74,7 +59,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     let customCellIdentifier = "customCellIdentifier"
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let customCell = collectionView.dequeueReusableCellWithReuseIdentifier(customCellIdentifier, forIndexPath: indexPath) as! CustomCell
+        let customCell = collectionView.dequeueReusableCellWithReuseIdentifier(customCellIdentifier, forIndexPath: indexPath) as! CategoryCollectionViewCell
         customCell.nameLabel.text = categoriesArray[indexPath.item].name
         customCell.categoryImageView.image = UIImage(named: categoriesArray[indexPath.item].imageName!)
         return customCell
@@ -85,7 +70,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-
+        
         
         let tableViewController = EstablishmentsInCategoryTableViewController()
         navigationController?.pushViewController(tableViewController, animated: true)
@@ -117,6 +102,49 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return CGFloat(5)
     }
+    
+    
+    
+    
+    // MARK: Settings Pushed on Navigation Controller
+    
+    func createNavigationBarSettingsButton() {
+        
+        let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(showSettingsView))
+        navigationItem.rightBarButtonItem = settingsButton
+        settingsButton.tintColor = UIColor.lightGrayColor()
+    }
+    
+    lazy var settings: SettingsCollectionViewLaucher = {
+        let launcher = SettingsCollectionViewLaucher()
+        launcher.categoryCollectionViewController = self
+        return launcher
+    }()
+    
+    func showSettingsView() {
+        
+        settings.showSettings()
+        
+    }
+    
+    func showSettingsController(setting: Setting) {
+        let tempController = UIViewController()
+        tempController.view.backgroundColor = UIColor.whiteColor()
+        tempController.navigationItem.title = setting.name.rawValue
+        navigationController?.pushViewController(tempController, animated: true)
+        
+    }
+    
+    
+    // MARK: Login In Controller Pushed on Navigation Controller
+    
+    func showLoginViewController() {
+        
+        let loginViewController = LoginViewController()
+        //presentViewController(loginViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(loginViewController, animated: true)
+    }
+    
 
 }
 
@@ -124,67 +152,3 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
 
 
 
-class CustomCell: UICollectionViewCell {
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        setUpViews()
-        
-    }
-    
-    override var highlighted: Bool {
-        didSet {
-            backgroundColor = highlighted ? UIColor(red: 168/255, green: 3/255, blue: 3/255, alpha: 1) : nil
-            nameLabel.textColor = highlighted ? UIColor.whiteColor() : UIColor.blackColor()
-        }
-    }
-    
-    // category ImageView
-    let categoryImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .ScaleAspectFill
-        imageView.layer.cornerRadius = 75
-        imageView.layer.borderColor = UIColor.grayColor().CGColor
-        imageView.layer.borderWidth = 1
-        imageView.layer.masksToBounds = true
-        
-        return imageView
-    }()
-    
-    let nameLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Avenir-Medium" , size: 18)
-        return label
-    }()
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setUpViews() {
-        
-        //backgroundColor = UIColor.blueColor()
-        
-        addSubview(categoryImageView)
-        //categoryImageView.image = UIImage(named: "ramen")
-        categoryImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(nameLabel)
-        
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[v0(150)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":categoryImageView]))
-        
-        
-        addConstraint(NSLayoutConstraint(item: categoryImageView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0))
-        
-        addConstraint(NSLayoutConstraint(item: nameLabel, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0))
-        
-        
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-17-[v0(150)]-4-[v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":categoryImageView, "v1":nameLabel]))
-        
-        
-        
-    }
-    
-}

@@ -16,7 +16,6 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
     let cellHeight: CGFloat = 60
     
     
-    
     let blackView = UIView()
     
     let collectionView: UICollectionView = {
@@ -29,9 +28,12 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
     
     
     let settings: [Setting] = {
-        return [Setting(name: "Login", imageName: "account"), Setting(name: "Request a Category", imageName: "request"), Setting(name: "Request an Establishment", imageName: "question"), Setting(name: "Cancel", imageName: "cancel")]
+        
+        return [Setting(name: .Login, imageName: "account"), Setting(name: .CategoryRequest, imageName: "request"), Setting(name: .EstablishmentRequest, imageName: "question"), Setting(name: .Cancel, imageName: "cancel")]
     }()
     
+    
+    var categoryCollectionViewController: CategoryCollectionViewController?
     
     func showSettings() {
         
@@ -56,7 +58,7 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
             
             
             window.addSubview(collectionView)
-        
+            
             
             UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
                 self.blackView.alpha = 1
@@ -68,17 +70,40 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
         
     }
     
+    func handleDismissAnimation(){
+        self.blackView.alpha = 0
+        
+        if let window = UIApplication.sharedApplication().keyWindow {
+            self.collectionView.frame = CGRectMake(0, window.frame.height, self.collectionView.frame.width, self.collectionView.frame.height)
+        }
+    }
     
     func handleDismissSettingsView() {
-        //print("handling dismiss")
-        UIView.animateWithDuration(0.5) {
-            self.blackView.alpha = 0
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+            self.handleDismissAnimation()
+            }, completion: nil)
+    }
+    
+    func handleDismissSettingsViewWithName(setting: Setting) {
+        
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+            self.handleDismissAnimation()
+        }) { (completed: Bool) in
             
-            if let window = UIApplication.sharedApplication().keyWindow {
-                self.collectionView.frame = CGRectMake(0, window.frame.height, self.collectionView.frame.width, self.collectionView.frame.height)
-
+            let name = setting.name
+            switch name {
+                
+            case .Login:
+                self.categoryCollectionViewController?.showLoginViewController()
+            case .CategoryRequest, .EstablishmentRequest:
+                self.categoryCollectionViewController?.showSettingsController(setting)
+            default:
+                break
+                
             }
+            
         }
+        
     }
     
     // Delegate and Data Source For Collection View
@@ -100,6 +125,14 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 0
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let setting = settings[indexPath.item]
+        //print(setting.name)
+        handleDismissSettingsViewWithName(setting)
+        
+        
     }
     
     

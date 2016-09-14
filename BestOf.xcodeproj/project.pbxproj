@@ -18,6 +18,8 @@
 		BE7A12C71D826F54006F438C /* SettingsCollectionViewLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12C61D826F54006F438C /* SettingsCollectionViewLauncher.swift */; };
 		BE7A12C91D8620CB006F438C /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12C81D8620CB006F438C /* SettingsCell.swift */; };
 		BE7A12CD1D86502A006F438C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12CC1D86502A006F438C /* Setting.swift */; };
+		BE7A12D11D87EA20006F438C /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12D01D87EA20006F438C /* CategoryCollectionViewCell.swift */; };
+		BE7A12D31D8910D9006F438C /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12D21D8910D9006F438C /* LoginController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,12 +42,14 @@
 		BE7A12AF1D6D6799006F438C /* BestOfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BestOfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7A12B31D6D6799006F438C /* BestOfTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestOfTests.swift; sourceTree = "<group>"; };
 		BE7A12B51D6D6799006F438C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BE7A12BE1D6ECE09006F438C /* Establishment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Establishment.swift; sourceTree = "<group>"; };
+		BE7A12BE1D6ECE09006F438C /* Establishment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Establishment.swift; path = BestOf/Establishment.swift; sourceTree = "<group>"; };
 		BE7A12C21D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EstablishmentsInCategoryTableViewController.swift; path = ../EstablishmentsInCategoryTableViewController.swift; sourceTree = "<group>"; };
 		BE7A12C41D701652006F438C /* EstablishmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EstablishmentTableViewCell.swift; sourceTree = "<group>"; };
 		BE7A12C61D826F54006F438C /* SettingsCollectionViewLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCollectionViewLauncher.swift; sourceTree = "<group>"; };
 		BE7A12C81D8620CB006F438C /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
-		BE7A12CC1D86502A006F438C /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Setting.swift; path = ../Setting.swift; sourceTree = "<group>"; };
+		BE7A12CC1D86502A006F438C /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		BE7A12D01D87EA20006F438C /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		BE7A12D21D8910D9006F438C /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +76,7 @@
 				BE7A129D1D6D6799006F438C /* BestOf */,
 				BE7A12B21D6D6799006F438C /* BestOfTests */,
 				BE7A129C1D6D6799006F438C /* Products */,
+				BE7A12CF1D87E825006F438C /* Supporting Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,17 +92,15 @@
 		BE7A129D1D6D6799006F438C /* BestOf */ = {
 			isa = PBXGroup;
 			children = (
-				BE7A12CC1D86502A006F438C /* Setting.swift */,
 				BE7A12C21D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift */,
 				BE7A12C41D701652006F438C /* EstablishmentTableViewCell.swift */,
-				BE7A129E1D6D6799006F438C /* AppDelegate.swift */,
 				BE7A12C61D826F54006F438C /* SettingsCollectionViewLauncher.swift */,
 				BE7A12C81D8620CB006F438C /* SettingsCell.swift */,
 				BE7A12A01D6D6799006F438C /* CategoryCollectionViewController.swift */,
-				BE7A12BE1D6ECE09006F438C /* Establishment.swift */,
+				BE7A12D01D87EA20006F438C /* CategoryCollectionViewCell.swift */,
+				BE7A12D21D8910D9006F438C /* LoginController.swift */,
 				BE7A12A51D6D6799006F438C /* Assets.xcassets */,
-				BE7A12A71D6D6799006F438C /* LaunchScreen.storyboard */,
-				BE7A12AA1D6D6799006F438C /* Info.plist */,
+				BE7A12CE1D87E7AA006F438C /* Model */,
 			);
 			path = BestOf;
 			sourceTree = "<group>";
@@ -109,6 +112,27 @@
 				BE7A12B51D6D6799006F438C /* Info.plist */,
 			);
 			path = BestOfTests;
+			sourceTree = "<group>";
+		};
+		BE7A12CE1D87E7AA006F438C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				BE7A12BE1D6ECE09006F438C /* Establishment.swift */,
+				BE7A12CC1D86502A006F438C /* Setting.swift */,
+			);
+			name = Model;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		BE7A12CF1D87E825006F438C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BE7A129E1D6D6799006F438C /* AppDelegate.swift */,
+				BE7A12A71D6D6799006F438C /* LaunchScreen.storyboard */,
+				BE7A12AA1D6D6799006F438C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			path = BestOf;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,10 +239,12 @@
 				BE7A12A11D6D6799006F438C /* CategoryCollectionViewController.swift in Sources */,
 				BE7A12BF1D6ECE09006F438C /* Establishment.swift in Sources */,
 				BE7A129F1D6D6799006F438C /* AppDelegate.swift in Sources */,
+				BE7A12D11D87EA20006F438C /* CategoryCollectionViewCell.swift in Sources */,
 				BE7A12C71D826F54006F438C /* SettingsCollectionViewLauncher.swift in Sources */,
 				BE7A12C51D701652006F438C /* EstablishmentTableViewCell.swift in Sources */,
 				BE7A12CD1D86502A006F438C /* Setting.swift in Sources */,
 				BE7A12C31D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift in Sources */,
+				BE7A12D31D8910D9006F438C /* LoginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +428,7 @@
 				BE7A12BA1D6D6799006F438C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BE7A12BB1D6D6799006F438C /* Build configuration list for PBXNativeTarget "BestOfTests" */ = {
 			isa = XCConfigurationList;
@@ -410,6 +437,7 @@
 				BE7A12BD1D6D6799006F438C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

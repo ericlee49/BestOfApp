@@ -9,11 +9,18 @@
 import UIKit
 
 class Setting: NSObject {
-    let name: String
+    let name: SettingType
     let imageName: String
     
-    init(name: String, imageName: String) {
+    init(name: SettingType, imageName: String) {
         self.name = name
         self.imageName = imageName
+    }
+    
+    enum SettingType: String {
+        case Login = "Login"
+        case CategoryRequest = "Request a Category"
+        case EstablishmentRequest = "Request an Establishment"
+        case Cancel = "Cancel"
     }
 }

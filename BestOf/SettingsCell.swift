@@ -21,10 +21,11 @@ class SettingsCell: UICollectionViewCell {
     
     var setting: Setting? {
         didSet {
-            self.nameLabel.text = setting?.name
+            self.nameLabel.text = setting?.name.rawValue
             
             if let iconImage = setting?.imageName {
                 self.iconImageView.image = UIImage(named: iconImage)?.imageWithRenderingMode(.AlwaysTemplate)
+                self.iconImageView.tintColor = UIColor.darkGrayColor()
 
             }
             
