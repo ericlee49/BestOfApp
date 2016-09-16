@@ -28,6 +28,8 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         
         navigationItem.title = "BestOf Vancouver"
         
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        
         collectionView?.backgroundColor = UIColor(white: 0.95, alpha: 1)
         
         collectionView?.alwaysBounceVertical = true
@@ -128,6 +130,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     }
     
     func showSettingsController(setting: Setting) {
+
         let tempController = UIViewController()
         tempController.view.backgroundColor = UIColor.whiteColor()
         tempController.navigationItem.title = setting.name.rawValue
@@ -139,6 +142,12 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     // MARK: Login In Controller Pushed on Navigation Controller
     
     func showLoginViewController() {
+        
+        let backItem = UIBarButtonItem()
+
+        backItem.title = "Back"
+        
+        navigationItem.backBarButtonItem = backItem
         
         let loginViewController = LoginViewController()
         //presentViewController(loginViewController, animated: true, completion: nil)
