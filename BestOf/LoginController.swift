@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +20,53 @@ class LoginViewController: UIViewController {
         setupContainerView()
         setupLoginButton()
         
+        self.nameTextField.delegate = self
+        self.emailTextField.delegate = self
+        self.passwordTextField.delegate = self
+
+
+        
+        // Resign keyboard when view is tapped outside keyboard
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(resignKeyboardWithTap))
+        view.addGestureRecognizer(tapGesture)
+        
     }
+    
+    // MARK: UITextField Delegate Protocols
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if textField === self.nameTextField {
+            self.emailTextField.becomeFirstResponder()
+            return true
+        }
+        if textField === self.emailTextField {
+            self.passwordTextField.becomeFirstResponder()
+            return true
+        }
+        
+        return true
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        textField.becomeFirstResponder()
+    }
+    
+    func resignKeyboardWithTap() {
+        if self.nameTextField.isFirstResponder() == true {
+            self.nameTextField.resignFirstResponder()
+            return
+        }
+        if self.emailTextField.isFirstResponder() == true {
+            self.emailTextField.resignFirstResponder()
+            return
+        }
+        
+        if self.passwordTextField.isFirstResponder() == true {
+            self.passwordTextField.resignFirstResponder()
+            return
+        }
+    }
+    
     
     
 
