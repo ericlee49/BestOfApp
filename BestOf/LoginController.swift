@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
@@ -16,9 +17,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.navigationItem.title = "Login/Register"
         
         view.addSubview(inputsViewContainerView)
-        view.addSubview(loginButton)
+        view.addSubview(loginRegisterButton)
+        view.addSubview(loginRegisterSegementedControl)
         setupContainerView()
         setupLoginButton()
+        setupLoginRegisterSegmentedControl()
         
         self.nameTextField.delegate = self
         self.emailTextField.delegate = self
@@ -68,6 +71,51 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     
+    // MARK: Firebase helper methods:
+    
+    // Action: handle register
+    func handleRegister() {
+        
+        self.resignFirstResponder()
+        
+        guard let
+            name = nameTextField.text,
+            email = emailTextField.text,
+            password = passwordTextField.text where !name.isEmpty && !email.isEmpty && !password.isEmpty else {
+                let alert = UIAlertController(title: "Incomplete", message: "Login form not complete", preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                
+                self.presentViewController(alert, animated: true, completion: nil)
+                print("Login form not complete")
+                return
+        }
+        
+        FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user:FIRUser?, error) in
+            if error != nil {
+                print(error)
+                print("failed to create user in Firebase *******")
+                return
+            }
+            
+            guard let uid = user?.uid else {
+                return
+            }
+            
+            let ref = FIRDatabase.database().reference()
+            let usersReference = ref.child("users").child(uid)
+            let values = ["name": name, "email":email]
+            usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                if err != nil {
+                    print(err)
+                    return
+                }
+                
+                print("Successfully saved user to Firebase db")
+            })
+        })
+    }
+    
+    
     
 
     // MARK: Views
@@ -81,14 +129,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return view
     }()
     
-    let loginButton: UIButton = {
+    lazy var loginRegisterButton: UIButton = {
         let button = UIButton(type: .System)
-        button.backgroundColor = UIColor(red: 145/255, green: 3/255, blue: 3/255, alpha: 1)
-        button.setTitle("Login", forState: UIControlState.Normal)
+        button.backgroundColor = UIColor(red: 195/255, green: 3/255, blue: 3/255, alpha: 1)
+        button.setTitle("Register", forState: UIControlState.Normal)
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         button.layer.cornerRadius = 5
         button.titleLabel?.font = UIFont.boldSystemFontOfSize(16)
         button.translatesAutoresizingMaskIntoConstraints = false
+        
+        //add action to register/login (FIREBASE)
+        button.addTarget(self, action: #selector(handleRegister), forControlEvents: .TouchUpInside)
         
         return button
     
@@ -105,6 +156,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.placeholder = "Email Address"
+        textField.autocapitalizationType = UITextAutocapitalizationType.None
         return textField
     }()
     
@@ -131,6 +183,33 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    
+    // Segmented Controller
+    
+    lazy var loginRegisterSegementedControl: UISegmentedControl = {
+        let sc = UISegmentedControl(items: ["Login", "Register"])
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        sc.tintColor = UIColor.whiteColor()
+        sc.layer.cornerRadius = 5
+        sc.selectedSegmentIndex = 1
+        sc.addTarget(self, action: #selector(handleLoginRegisterChange), forControlEvents: .ValueChanged)
+        return sc
+    }()
+    
+    // MARK: Segmented Control action methods
+    
+    func handleLoginRegisterChange(){
+        let title = loginRegisterSegementedControl.titleForSegmentAtIndex(loginRegisterSegementedControl.selectedSegmentIndex)
+        loginRegisterButton.setTitle(title, forState: .Normal)
+        
+        
+        // switch 
+    }
+    
+    
+    
+    
     // MARK: Views setup & autolayouts
     
     func setupContainerView() {
@@ -188,20 +267,30 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         
     }
-    
+    // autolayout setup for login & register button
     func setupLoginButton() {
         
         // Autolayout inputsViewContainerView
         // x, y, width, height constraints
         
-        loginButton.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
-        loginButton.topAnchor.constraintEqualToAnchor(inputsViewContainerView.bottomAnchor, constant: 10).active = true
-        loginButton.widthAnchor.constraintEqualToAnchor(view.widthAnchor, constant: -25).active = true
-        loginButton.heightAnchor.constraintEqualToConstant(50).active = true
+        loginRegisterButton.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
+        loginRegisterButton.topAnchor.constraintEqualToAnchor(inputsViewContainerView.bottomAnchor, constant: 10).active = true
+        loginRegisterButton.widthAnchor.constraintEqualToAnchor(view.widthAnchor, constant: -25).active = true
+        loginRegisterButton.heightAnchor.constraintEqualToConstant(50).active = true
     }
     
     
+    // autolayout setup for segemnted control view
+    func setupLoginRegisterSegmentedControl() {
+        // need x, y, width, height constraints
+        
+        loginRegisterSegementedControl.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
+        loginRegisterSegementedControl.bottomAnchor.constraintEqualToAnchor(inputsViewContainerView.topAnchor, constant: -10).active = true
+        loginRegisterSegementedControl.widthAnchor.constraintEqualToAnchor(view.widthAnchor, constant: -25).active = true
+        loginRegisterSegementedControl.heightAnchor.constraintEqualToConstant(50).active = true
+    }
     
     
+
     
 }

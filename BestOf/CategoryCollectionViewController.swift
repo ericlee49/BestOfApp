@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Firebase
+
+
 
 // MARK: MODEL
 struct Categories {
@@ -41,6 +44,10 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         createCategories()
         
         createNavigationBarSettingsButton()
+        
+        // FIREBASE SETUP
+//        let ref = FIRDatabase.database().reference()
+//        ref.updateChildValues(["someValue": 1231231])
         
     }
     
