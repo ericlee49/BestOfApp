@@ -7,8 +7,11 @@ iOS app that shows a cities popular items (best: coffee, gyms, yoga spots, parks
 implements ios9 programmatic auto-layouts.  No storyboarding is used.  Programmatic constraints are applied, custom collectionView and tableViews are used.
 
 ## Tasks:
-- complete and solidify model from mvc
+- complete model for mvc
 - consider image compression
-- connect firebase
-- establish user login controller
-- establish users
+- connect model to firebase
+- establish user login controller (complete)
+- establish users (complete)
+- create view for establishment requests
+- create view for category requests
+- submit requests to database
