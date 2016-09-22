@@ -203,24 +203,55 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let title = loginRegisterSegementedControl.titleForSegmentAtIndex(loginRegisterSegementedControl.selectedSegmentIndex)
         loginRegisterButton.setTitle(title, forState: .Normal)
         
+//        if loginRegisterSegementedControl.selectedSegmentIndex == 0 {
+//            inputsViewContainerHeightConstraint?.constant = 100
+//        } else if loginRegisterSegementedControl.selectedSegmentIndex == 1 {
+//            inputsViewContainerHeightConstraint?.constant = 150
+//        }
         
-        // switch 
+        inputsViewContainerHeightConstraint?.constant = loginRegisterSegementedControl.selectedSegmentIndex == 0 ? 100 : 150
+        
+        nameTextFieldHeightConstraint?.active = false
+        let nameTextFieldMultiplier: CGFloat = loginRegisterSegementedControl.selectedSegmentIndex == 0 ? 0 : 1/3
+        nameTextFieldHeightConstraint = nameTextField.heightAnchor.constraintEqualToAnchor(inputsViewContainerView.heightAnchor, multiplier: nameTextFieldMultiplier)
+        nameTextFieldHeightConstraint?.active = true
+        
+        emailTextFieldHeightConstraint?.active = false
+        let emailTextFieldMultiplier: CGFloat = loginRegisterSegementedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3
+        emailTextFieldHeightConstraint = emailTextField.heightAnchor.constraintEqualToAnchor(inputsViewContainerView.heightAnchor, multiplier: emailTextFieldMultiplier)
+        emailTextFieldHeightConstraint?.active = true
+        
+        passwordTextFieldHeightConstraint?.active = false
+        let passwordTextFieldMultiplier: CGFloat = loginRegisterSegementedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3
+        passwordTextFieldHeightConstraint = passwordTextField.heightAnchor.constraintEqualToAnchor(inputsViewContainerView.heightAnchor, multiplier: passwordTextFieldMultiplier)
+        passwordTextFieldHeightConstraint?.active = true
+        
+        
+        
+        // switch
     }
     
     
     
     
     // MARK: Views setup & autolayouts
+
+    var inputsViewContainerHeightConstraint: NSLayoutConstraint?
+    var nameTextFieldHeightConstraint: NSLayoutConstraint?
+    var emailTextFieldHeightConstraint: NSLayoutConstraint?
+    var passwordTextFieldHeightConstraint: NSLayoutConstraint?
+
     
     func setupContainerView() {
         
         // Autolayout inputsViewContainerView
         // x, y, width, height constraints
-        let inputsViewContainerHeight: CGFloat = 150
+        
         inputsViewContainerView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
         inputsViewContainerView.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor).active = true
         inputsViewContainerView.widthAnchor.constraintEqualToAnchor(view.widthAnchor, constant: -25).active = true
-        inputsViewContainerView.heightAnchor.constraintEqualToConstant(inputsViewContainerHeight).active = true
+        inputsViewContainerHeightConstraint = inputsViewContainerView.heightAnchor.constraintEqualToConstant(150)
+        inputsViewContainerHeightConstraint?.active = true
         
         // Add nameTextField to container & autolayout
         inputsViewContainerView.addSubview(nameTextField)
@@ -228,7 +259,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         nameTextField.leftAnchor.constraintEqualToAnchor(inputsViewContainerView.leftAnchor, constant: 12).active = true
         nameTextField.topAnchor.constraintEqualToAnchor(inputsViewContainerView.topAnchor).active = true
         nameTextField.rightAnchor.constraintEqualToAnchor(inputsViewContainerView.rightAnchor, constant: -12).active = true
-        nameTextField.heightAnchor.constraintEqualToAnchor(inputsViewContainerView.heightAnchor, multiplier: 1/3).active = true
+        nameTextFieldHeightConstraint = nameTextField.heightAnchor.constraintEqualToAnchor(inputsViewContainerView.heightAnchor, multiplier: 1/3)
+        nameTextFieldHeightConstraint?.active = true
         
         // Add emailTextField to container & autolayout
         inputsViewContainerView.addSubview(emailTextField)
@@ -236,7 +268,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         emailTextField.leftAnchor.constraintEqualToAnchor(inputsViewContainerView.leftAnchor, constant: 12).active = true
         emailTextField.topAnchor.constraintEqualToAnchor(nameTextField.bottomAnchor).active = true
         emailTextField.rightAnchor.constraintEqualToAnchor(inputsViewContainerView.rightAnchor, constant: -12).active = true
-        emailTextField.heightAnchor.constraintEqualToAnchor(inputsViewContainerView.heightAnchor, multiplier: 1/3).active = true
+        emailTextFieldHeightConstraint = emailTextField.heightAnchor.constraintEqualToAnchor(inputsViewContainerView.heightAnchor, multiplier: 1/3)
+        emailTextFieldHeightConstraint?.active = true
+        
         
         // Add passwordTextField to container & autolayout
         inputsViewContainerView.addSubview(passwordTextField)
@@ -244,7 +278,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         passwordTextField.leftAnchor.constraintEqualToAnchor(inputsViewContainerView.leftAnchor, constant: 12).active = true
         passwordTextField.topAnchor.constraintEqualToAnchor(emailTextField.bottomAnchor).active = true
         passwordTextField.rightAnchor.constraintEqualToAnchor(inputsViewContainerView.rightAnchor, constant: -12).active = true
-        passwordTextField.heightAnchor.constraintEqualToAnchor(inputsViewContainerView.heightAnchor, multiplier: 1/3).active = true
+        passwordTextFieldHeightConstraint = passwordTextField.heightAnchor.constraintEqualToAnchor(inputsViewContainerView.heightAnchor, multiplier: 1/3)
+        passwordTextFieldHeightConstraint?.active = true
+        
         
         // Add nameToEmailDividerLine to container & autolayout
         inputsViewContainerView.addSubview(nameToEmailDividerLine)
