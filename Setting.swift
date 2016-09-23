@@ -8,6 +8,9 @@
 
 import UIKit
 
+
+
+
 class Setting: NSObject {
     let name: SettingType
     let imageName: String
@@ -17,10 +20,13 @@ class Setting: NSObject {
         self.imageName = imageName
     }
     
+    
     enum SettingType: String {
         case Login = "Login"
+        case Logout = "Log-Out"
         case CategoryRequest = "Request a Category"
         case EstablishmentRequest = "Request an Establishment"
         case Cancel = "Cancel"
     }
+    
 }

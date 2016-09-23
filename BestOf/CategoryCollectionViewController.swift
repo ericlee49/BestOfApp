@@ -131,12 +131,21 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     }()
     
     func showSettingsView() {
+        if FIRAuth.auth()?.currentUser?.uid != nil {
+            print("made it here")
+            //settings.loginLogOutSetting = Setting(name: .Logout, imageName: "account")
+            settings.settings![0] = Setting(name: .Logout, imageName: "account")
+            settings.collectionView.reloadData()
+        } else {
+            settings.settings![0] = Setting(name: .Login, imageName: "account")
+            settings.collectionView.reloadData()
+        }
         
         settings.showSettings()
         
     }
     
-    func showSettingsController(setting: Setting) {
+    func showRequestController(setting: Setting) {
 
         let tempController = UIViewController()
         tempController.view.backgroundColor = UIColor.whiteColor()
@@ -159,6 +168,17 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         let loginViewController = LoginViewController()
         //presentViewController(loginViewController, animated: true, completion: nil)
         navigationController?.pushViewController(loginViewController, animated: true)
+    }
+    
+    // MARK: Handle Logout
+    func handleLogout() {
+        
+        do {
+            try FIRAuth.auth()?.signOut()
+            
+        }catch let logoutError {
+            print(logoutError)
+        }
     }
     
 

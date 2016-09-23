@@ -46,6 +46,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.passwordTextField.becomeFirstResponder()
             return true
         }
+        if textField === self.passwordTextField {
+            handleRegister()
+        }
         
         return true
     }
@@ -73,7 +76,70 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: Firebase helper methods:
     
-    // Action: handle register
+
+    //handle login / register
+    
+    func handleLoginRegister() {
+        if loginRegisterSegementedControl.selectedSegmentIndex == 0 {
+            // LOGIN
+            handleLogin()
+        } else {
+            handleRegister()
+        }
+    }
+    
+    
+    func failureAlert() {
+        let alert = UIAlertController(title: "Incomplete", message: "Could not login/Register", preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Retry", style: .Default, handler: nil))
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func successAlert() {
+        let alert = UIAlertController(title: "Success", message: "Succesfully logged in", preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (alert: UIAlertAction) in
+            self.navigationController?.popViewControllerAnimated(true)
+        }))
+        
+        
+
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+        
+    }
+    
+    //handle login helper
+    func handleLogin() {
+        self.resignFirstResponder()
+        
+//        guard let
+//            email = emailTextField.text,
+//            password = passwordTextField.text where !email.isEmpty && !password.isEmpty else {
+//                failureAlert()
+//                print("Login form not complete")
+//                return
+//        }
+//        
+        guard let email = emailTextField.text, password = passwordTextField.text else {
+            print("form incomplete")
+            return
+        }
+        
+        FIRAuth.auth()?.signInWithEmail(email, password: password, completion: { (user, error) in
+            if error != nil {
+                print(error)
+                return
+            }
+           
+            self.successAlert()
+            
+            
+        })
+        
+    }
+    
+    //handle register helper
     func handleRegister() {
         
         self.resignFirstResponder()
@@ -82,11 +148,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             name = nameTextField.text,
             email = emailTextField.text,
             password = passwordTextField.text where !name.isEmpty && !email.isEmpty && !password.isEmpty else {
-                let alert = UIAlertController(title: "Incomplete", message: "Login form not complete", preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-                
-                self.presentViewController(alert, animated: true, completion: nil)
-                print("Login form not complete")
+                failureAlert()
                 return
         }
         
@@ -109,6 +171,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     print(err)
                     return
                 }
+                self.successAlert()
                 
                 print("Successfully saved user to Firebase db")
             })
@@ -139,7 +202,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         
         //add action to register/login (FIREBASE)
-        button.addTarget(self, action: #selector(handleRegister), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(handleLoginRegister), forControlEvents: .TouchUpInside)
         
         return button
     
@@ -202,12 +265,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func handleLoginRegisterChange(){
         let title = loginRegisterSegementedControl.titleForSegmentAtIndex(loginRegisterSegementedControl.selectedSegmentIndex)
         loginRegisterButton.setTitle(title, forState: .Normal)
-        
-//        if loginRegisterSegementedControl.selectedSegmentIndex == 0 {
-//            inputsViewContainerHeightConstraint?.constant = 100
-//        } else if loginRegisterSegementedControl.selectedSegmentIndex == 1 {
-//            inputsViewContainerHeightConstraint?.constant = 150
-//        }
         
         inputsViewContainerHeightConstraint?.constant = loginRegisterSegementedControl.selectedSegmentIndex == 0 ? 100 : 150
         

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 // need dataSource since we are not a collectionViewController
 class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout     {
@@ -26,11 +27,13 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
         return cv
     }()
     
+    let loginLogOutSetting = Setting(name: .Login, imageName: "account")
+    let categoryRequestSetting = Setting(name: .CategoryRequest, imageName: "request")
+    let establishmentRequestSetting = Setting(name: .EstablishmentRequest, imageName: "question")
+    let cancelSetting = Setting(name: .Cancel, imageName: "cancel")
     
-    let settings: [Setting] = {
-        
-        return [Setting(name: .Login, imageName: "account"), Setting(name: .CategoryRequest, imageName: "request"), Setting(name: .EstablishmentRequest, imageName: "question"), Setting(name: .Cancel, imageName: "cancel")]
-    }()
+    var settings: [Setting]?
+    
     
     
     var categoryCollectionViewController: CategoryCollectionViewController?
@@ -52,7 +55,7 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
             
             
             // Collection View setup
-            let collectionViewHeight:CGFloat = cellHeight * CGFloat(settings.count)
+            let collectionViewHeight:CGFloat = cellHeight * CGFloat(settings!.count)
             let y_Position = window.frame.height - collectionViewHeight
             self.collectionView.frame = CGRectMake(0, window.frame.height, window.frame.width, collectionViewHeight)
             
@@ -95,8 +98,11 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
                 
             case .Login:
                 self.categoryCollectionViewController?.showLoginViewController()
+            case .Logout:
+                self.categoryCollectionViewController?.handleLogout()
+                self.categoryCollectionViewController?.showLoginViewController()
             case .CategoryRequest, .EstablishmentRequest:
-                self.categoryCollectionViewController?.showSettingsController(setting)
+                self.categoryCollectionViewController?.showRequestController(setting)
             default:
                 break
                 
@@ -109,12 +115,20 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
     // Delegate and Data Source For Collection View
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return settings.count
+        if let settingsArray = settings {
+            return settingsArray.count
+        } else{
+            return 0
+        }
+        
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId, forIndexPath: indexPath) as! SettingsCell
-        cell.setting = settings[indexPath.item]
+        if let settingsArray = settings {
+            cell.setting = settingsArray[indexPath.item]
+        }
+
         return cell
         
     }
@@ -128,9 +142,11 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let setting = settings[indexPath.item]
-        //print(setting.name)
-        handleDismissSettingsViewWithName(setting)
+        if let settingsArray = settings {
+            let setting = settingsArray[indexPath.item]
+            handleDismissSettingsViewWithName(setting)
+        }
+        
         
         
     }
@@ -138,6 +154,11 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
     
     override init() {
         super.init()
+        
+        
+        
+        self.settings = [loginLogOutSetting, categoryRequestSetting, establishmentRequestSetting, cancelSetting ]
+        
         
         
         collectionView.dataSource = self
