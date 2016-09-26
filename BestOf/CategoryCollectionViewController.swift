@@ -14,7 +14,8 @@ import Firebase
 // MARK: MODEL
 struct Categories {
     var name: String?
-    var imageName: String?
+    var imageURL: String?
+    var establishmentURLs: [String]?
 }
 
 
@@ -24,6 +25,13 @@ struct Categories {
 class CategoryCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var categoriesArray = [Categories]()
+    
+    
+    let backItem: UIBarButtonItem = {
+        let barButton = UIBarButtonItem()
+        barButton.title = "Back"
+        return barButton
+    }()
     
     
     override func viewDidLoad() {
@@ -54,11 +62,11 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     func createCategories() {
         
-        let coffee = Categories(name: "Coffee", imageName: "coffee")
+        let coffee = Categories(name: "Coffee", imageURL: "coffee", establishmentURLs: [])
         
-        let ramen = Categories(name: "Ramen", imageName: "ramen")
+        let ramen = Categories(name: "Ramen", imageURL: "ramen", establishmentURLs: [])
         
-        let iceCream = Categories(name: "Ice Cream", imageName: "icecream")
+        let iceCream = Categories(name: "Ice Cream", imageURL: "icecream", establishmentURLs: [])
         
         categoriesArray += [coffee, ramen, iceCream]
     }
@@ -70,7 +78,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let customCell = collectionView.dequeueReusableCellWithReuseIdentifier(customCellIdentifier, forIndexPath: indexPath) as! CategoryCollectionViewCell
         customCell.nameLabel.text = categoriesArray[indexPath.item].name
-        customCell.categoryImageView.image = UIImage(named: categoriesArray[indexPath.item].imageName!)
+        customCell.categoryImageView.image = UIImage(named: categoriesArray[indexPath.item].imageURL!)
         return customCell
     }
     
@@ -117,6 +125,8 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     // MARK: Settings Pushed on Navigation Controller
     
+
+    
     func createNavigationBarSettingsButton() {
         
         let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(showSettingsView))
@@ -147,10 +157,13 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     func showRequestController(setting: Setting) {
 
-        let tempController = UIViewController()
-        tempController.view.backgroundColor = UIColor.whiteColor()
-        tempController.navigationItem.title = setting.name.rawValue
-        navigationController?.pushViewController(tempController, animated: true)
+//        let tempController = UIViewController()
+//        tempController.view.backgroundColor = UIColor.whiteColor()
+//        tempController.navigationItem.title = setting.name.rawValue
+//        navigationController?.pushViewController(tempController, animated: true)
+        navigationItem.backBarButtonItem = self.backItem
+        let categoryRequestViewController  = CategoryRequestViewController()
+        navigationController?.pushViewController(categoryRequestViewController, animated: true)
         
     }
     
@@ -159,11 +172,9 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     func showLoginViewController() {
         
-        let backItem = UIBarButtonItem()
 
-        backItem.title = "Back"
         
-        navigationItem.backBarButtonItem = backItem
+        navigationItem.backBarButtonItem = self.backItem
         
         let loginViewController = LoginViewController()
         //presentViewController(loginViewController, animated: true, completion: nil)

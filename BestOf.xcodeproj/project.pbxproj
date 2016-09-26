@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2E5444823A5ECE1FEF0646A5 /* Pods_BestOfTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 918A4297B58354E9CE0A5DDC /* Pods_BestOfTests.framework */; };
 		BE240F471D8F45AD00581DD8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE240F461D8F45AD00581DD8 /* GoogleService-Info.plist */; };
+		BE6603461D9501180023AF08 /* CategoryRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6603451D9501180023AF08 /* CategoryRequestViewController.swift */; };
 		BE7A129F1D6D6799006F438C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A129E1D6D6799006F438C /* AppDelegate.swift */; };
 		BE7A12A11D6D6799006F438C /* CategoryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12A01D6D6799006F438C /* CategoryCollectionViewController.swift */; };
 		BE7A12A61D6D6799006F438C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE7A12A51D6D6799006F438C /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 		67253361CA354143BBCB07F1 /* Pods-BestOf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOf.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestOf/Pods-BestOf.debug.xcconfig"; sourceTree = "<group>"; };
 		918A4297B58354E9CE0A5DDC /* Pods_BestOfTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestOfTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE240F461D8F45AD00581DD8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BE6603451D9501180023AF08 /* CategoryRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRequestViewController.swift; sourceTree = "<group>"; };
 		BE7A129B1D6D6799006F438C /* BestOf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BestOf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7A129E1D6D6799006F438C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE7A12A01D6D6799006F438C /* CategoryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewController.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				BE7A12A01D6D6799006F438C /* CategoryCollectionViewController.swift */,
 				BE7A12D01D87EA20006F438C /* CategoryCollectionViewCell.swift */,
 				BE7A12D21D8910D9006F438C /* LoginController.swift */,
+				BE6603451D9501180023AF08 /* CategoryRequestViewController.swift */,
 				BE7A12A51D6D6799006F438C /* Assets.xcassets */,
 				BE240F461D8F45AD00581DD8 /* GoogleService-Info.plist */,
 				BE7A12CE1D87E7AA006F438C /* Model */,
@@ -371,6 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE7A12C91D8620CB006F438C /* SettingsCell.swift in Sources */,
+				BE6603461D9501180023AF08 /* CategoryRequestViewController.swift in Sources */,
 				BE7A12A11D6D6799006F438C /* CategoryCollectionViewController.swift in Sources */,
 				BE7A12BF1D6ECE09006F438C /* Establishment.swift in Sources */,
 				BE7A129F1D6D6799006F438C /* AppDelegate.swift in Sources */,

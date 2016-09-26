@@ -47,7 +47,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return true
         }
         if textField === self.passwordTextField {
-            handleRegister()
+            handleLoginRegister()
         }
         
         return true
@@ -102,7 +102,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.navigationController?.popViewControllerAnimated(true)
         }))
         
-        
 
         self.presentViewController(alert, animated: true, completion: nil)
         
@@ -121,7 +120,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 //                return
 //        }
 //        
-        guard let email = emailTextField.text, password = passwordTextField.text else {
+        guard let email = emailTextField.text, password = passwordTextField.text where !email.isEmpty && !password.isEmpty else {
+            failureAlert()
             print("form incomplete")
             return
         }
