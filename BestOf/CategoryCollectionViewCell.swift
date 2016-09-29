@@ -43,6 +43,13 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 40, 40))
+        indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -66,6 +73,13 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         
         
         addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-17-[v0(150)]-4-[v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":categoryImageView, "v1":nameLabel]))
+        
+        // Adding indicator view
+        addSubview(activityIndicator)
+        // autolayouts for activity indicator
+        activityIndicator.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
+        activityIndicator.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
+        
         
         
     }

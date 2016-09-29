@@ -55,7 +55,7 @@ class EstablishmentTableViewCell: UITableViewCell {
     
     let addressLabel: UILabel = {
         let label = UILabel()
-        label.text = "Address: 325 Cambie St, Vancouver, BC V6B 1H7"
+        label.text = "325 Cambie St, Vancouver, BC V6B 1H7"
         label.font = UIFont.systemFontOfSize(16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -63,7 +63,7 @@ class EstablishmentTableViewCell: UITableViewCell {
     
     let phoneLabel: UILabel = {
         let label = UILabel()
-        label.text = "Phone: (604) 558-4444"
+        label.text = "(604) 558-4444"
         label.font = UIFont.systemFontOfSize(16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

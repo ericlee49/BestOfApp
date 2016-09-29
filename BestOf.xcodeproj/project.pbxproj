@@ -229,6 +229,7 @@
 				TargetAttributes = {
 					BE7A129A1D6D6799006F438C = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = XUAD2J7TFS;
 					};
 					BE7A12AE1D6D6799006F438C = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -507,6 +508,7 @@
 			baseConfigurationReference = 67253361CA354143BBCB07F1 /* Pods-BestOf.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = XUAD2J7TFS;
 				INFOPLIST_FILE = BestOf/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = eric.z0r7.BestOf;
@@ -519,6 +521,7 @@
 			baseConfigurationReference = 05C7B59ED94309632005BD10 /* Pods-BestOf.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = XUAD2J7TFS;
 				INFOPLIST_FILE = BestOf/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = eric.z0r7.BestOf;

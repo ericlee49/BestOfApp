@@ -36,6 +36,24 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         return barButton
     }()
     
+    let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 85, 85))
+        indicator.backgroundColor = UIColor.darkGrayColor()
+        indicator.layer.cornerRadius = 8
+        indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
+    func setupActivityIndicator() {
+        view.addSubview(activityIndicator)
+        activityIndicator.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
+        activityIndicator.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor).active = true
+        activityIndicator.startAnimating()
+        
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +73,8 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         createNavigationBarSettingsButton()
         
         loadCategories()
+        
+        setupActivityIndicator()
     }
     
     // MARK: SETUP, LOAD CATEROGRIES
@@ -92,6 +112,8 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let customCell = collectionView.dequeueReusableCellWithReuseIdentifier(customCellIdentifier, forIndexPath: indexPath) as! CategoryCollectionViewCell
+        customCell.activityIndicator.startAnimating()
+        
         customCell.nameLabel.text = categoryArray[indexPath.item].name
         
         if let categoryImageURL = categoryArray[indexPath.item].imageURL {
@@ -104,6 +126,8 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
                 // got the image if we are here
                 dispatch_async(dispatch_get_main_queue(), {
                     customCell.categoryImageView.image = UIImage(data: data!)
+                    self.activityIndicator.stopAnimating()
+                    customCell.activityIndicator.stopAnimating()
                 })
                 
                 
