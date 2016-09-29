@@ -13,21 +13,17 @@ import UIKit
 class Establishment: NSObject {
     
     var name: String?
-    var category: String?
     var likes = 0
     var dislikes = 0
+    var priceRange: String?
     
     
     
-    init(name: String, inCategory category: String) {
+    init(name: String, priceRange: String) {
         self.name = name
-        self.category = category
+        self.priceRange = priceRange
     }
 }
 
 
-enum EstablishmentCategories: String {
-    case Ramen = "ramen"
-    case IceCream = "iceCream"
-    case Coffee = "coffee"
-}
+

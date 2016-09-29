@@ -12,10 +12,11 @@ import Firebase
 
 
 // MARK: MODEL
-struct Categories {
+struct Category
+{
     var name: String?
     var imageURL: String?
-    var establishmentURLs: [String]?
+    var establishments: [String: AnyObject]?
 }
 
 
@@ -24,7 +25,9 @@ struct Categories {
 // MARK: CONTROLLER
 class CategoryCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    var categoriesArray = [Categories]()
+    var categoryArray = [Category]()
+    
+    var establishmentsInCategory = [String]()
     
     
     let backItem: UIBarButtonItem = {
@@ -49,26 +52,38 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         
         collectionView?.backgroundColor = UIColor.init(white: 0.9, alpha: 1)
         
-        createCategories()
-        
         createNavigationBarSettingsButton()
         
-        // FIREBASE SETUP
-//        let ref = FIRDatabase.database().reference()
-//        ref.updateChildValues(["someValue": 1231231])
-        
+        loadCategories()
     }
     
+    // MARK: SETUP, LOAD CATEROGRIES
     
-    func createCategories() {
+    
+    func loadCategories(){
         
-        let coffee = Categories(name: "Coffee", imageURL: "coffee", establishmentURLs: [])
+        let categoryDatabaseRef = FIRDatabase.database().reference().child("categories")
         
-        let ramen = Categories(name: "Ramen", imageURL: "ramen", establishmentURLs: [])
+
         
-        let iceCream = Categories(name: "Ice Cream", imageURL: "icecream", establishmentURLs: [])
+        categoryDatabaseRef.observeEventType(.ChildAdded, withBlock: { (snapshot) in
+            
+            if let categoryDictionary = snapshot.value as? [String: AnyObject] {
+                
+                let name = categoryDictionary["name"] as! String
+                let imageURL = categoryDictionary["imageURL"] as! String
+                let establishments = categoryDictionary["establishments"] as! [String: AnyObject]
+                
+                let category = Category(name: name, imageURL: imageURL, establishments: establishments)
+                
+                self.categoryArray.append(category)
+
+                self.collectionView?.reloadData()
+
+            }
+            
+        })
         
-        categoriesArray += [coffee, ramen, iceCream]
     }
     
     // MARK: CollectionView Data source, Delegate Protocols
@@ -77,36 +92,59 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let customCell = collectionView.dequeueReusableCellWithReuseIdentifier(customCellIdentifier, forIndexPath: indexPath) as! CategoryCollectionViewCell
-        customCell.nameLabel.text = categoriesArray[indexPath.item].name
-        customCell.categoryImageView.image = UIImage(named: categoriesArray[indexPath.item].imageURL!)
+        customCell.nameLabel.text = categoryArray[indexPath.item].name
+        
+        if let categoryImageURL = categoryArray[indexPath.item].imageURL {
+            let url = NSURL(string: categoryImageURL)
+            NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler: { (data, response, error) in
+                if error != nil {
+                    print(error)
+                    return
+                }
+                // got the image if we are here
+                dispatch_async(dispatch_get_main_queue(), {
+                    customCell.categoryImageView.image = UIImage(data: data!)
+                })
+                
+                
+                
+            }).resume()
+        }
+        
         return customCell
     }
     
+
+    
+    // MARK: CollectionView Spacing & Sizing & Delegate
+    
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categoriesArray.count
+        return categoryArray.count
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
+        // empty out establishmentsInCategory Array
+        self.establishmentsInCategory.removeAll()
+        
+        // load establishment IDs into array
+        for (_, establishmentID) in categoryArray[indexPath.item].establishments! {
+            self.establishmentsInCategory.append(establishmentID as! String)
+        }
+        
+        let categoryName = categoryArray[indexPath.item].name
+        navigationItem.backBarButtonItem = self.backItem
         
         let tableViewController = EstablishmentsInCategoryTableViewController()
+        tableViewController.establishmentIDs = self.establishmentsInCategory
+        tableViewController.categoryName = categoryName
+        
         navigationController?.pushViewController(tableViewController, animated: true)
         
         
-        
     }
     
-    func setUpEstablishments() -> [Establishment]{
-        
-        let jinya = Establishment(name: "Jinya", inCategory: "ramen")
-        let applause = Establishment(name: "Applause Sushi", inCategory: "ramen")
-        
-        return [jinya, applause]
-        
-    }
-    
-    
-    // MARK: CollectionView Spacing & Sizing
+    // Sizing & Spacing
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width/2 - 5 , height: collectionView.frame.width/2 - 10)

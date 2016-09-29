@@ -10,9 +10,10 @@ import UIKit
 
 class EstablishmentTableViewCell: UITableViewCell {
 
-    
+    static var defaultCellHeight: CGFloat = 60
+    static var expandedCellHeight: CGFloat = 200
 
-
+    // Initialization
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
         addSubview(percentRatingLabel)
@@ -20,21 +21,58 @@ class EstablishmentTableViewCell: UITableViewCell {
         setUpViews()
 
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: Views
+    
     let percentRatingLabel: UILabel = {
         let label = UILabel()
-        label.text = "89%"
         label.font = UIFont(name: "System Font", size: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "TEST TEXT"
+        //label.backgroundColor = UIColor.blueColor()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let priceRangeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "$$$$$"
+        //label.backgroundColor = UIColor.blueColor()
+        label.font = UIFont(name: "System Font", size: 14)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    
     
     func setUpViews() {
+        
+        
+        // name label autolayouts:
+        // x, y, height, width anchors:
+        addSubview(nameLabel)
+        nameLabel.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 10).active = true
+        nameLabel.topAnchor.constraintEqualToAnchor(self.topAnchor, constant: 10).active = true
+        //nameLabel.heightAnchor.constraintEqualToConstant(25).active = true
+        //nameLabel.widthAnchor.constraintEqualToConstant(80).active = true
+        
+        // price range label autolyaouts:
+        // x, y, height, width anchors:
+        addSubview(priceRangeLabel)
+        priceRangeLabel.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 10).active = true
+        priceRangeLabel.topAnchor.constraintEqualToAnchor(nameLabel.bottomAnchor, constant: 2).active = true
+
+        
         
         
         addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[v0]-15-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":percentRatingLabel]))
@@ -48,12 +86,6 @@ class EstablishmentTableViewCell: UITableViewCell {
     
     /*
 
-    let nameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "MOMOFUKU"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
     
     let percentRatingLabel: UILabel = {
         let label = UILabel()

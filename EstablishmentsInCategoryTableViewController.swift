@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import Firebase
 
 class EstablishmentsInCategoryTableViewController: UITableViewController {
 
+    var establishmentIDs = [String]()
     var establishments = [Establishment]()
+    var categoryName: String?
     
     private let cellId = "establishmentInCategoryTableCell"
     
@@ -24,6 +27,13 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        if let name = self.categoryName {
+            self.navigationItem.title = name
+        }
+        
+        
+        print(establishmentIDs)
     }
 
 
@@ -35,22 +45,45 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
-//        return establishments.count
+        return establishmentIDs.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath)
-
-        cell.textLabel?.text = "MOMOFUKU"
-        cell.detailTextLabel?.text = "Price Range: $$"
-
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath) as! EstablishmentTableViewCell
+        
+        let establishment = establishmentIDs[indexPath.row]
+        let ref = FIRDatabase.database().reference().child("establishments").child(establishment)
+        ref.observeEventType(.Value, withBlock: {(snapshot) in
+            
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                cell.nameLabel.text = dictionary["name"] as? String
+                
+                if let price = dictionary["priceRange"] as? String {
+                    cell.priceRangeLabel.text = "Price Range: \(price)"
+                }
+                
+                
+                if let dislikes = dictionary["dislikes"] as? Double, likes = dictionary["likes"] as? Double {
+                    let totalVotes = dislikes + likes
+                    print(totalVotes)
+                    let rating = likes / totalVotes
+                    print(rating)
+                    let percentRating = "\(round(rating * 100)) % "
+                    cell.percentRatingLabel.text = percentRating
+                }
+                
+            }
+            
+        }, withCancelBlock: nil)
         return cell
     }
     
+    
+    // Getting height for tableView
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 50
+        return EstablishmentTableViewCell.expandedCellHeight
     }
     
     
