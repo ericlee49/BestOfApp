@@ -15,6 +15,11 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     var establishments = [Establishment]()
     var categoryName: String?
     
+    var selectedIndexPath: NSIndexPath?
+    
+    let defaultCellHeight = EstablishmentTableViewCell.defaultCellHeight
+    let expandedCellHeight = EstablishmentTableViewCell.expandedCellHeight
+    
     private let cellId = "establishmentInCategoryTableCell"
     
     override func viewDidLoad() {
@@ -66,9 +71,9 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
                 
                 if let dislikes = dictionary["dislikes"] as? Double, likes = dictionary["likes"] as? Double {
                     let totalVotes = dislikes + likes
-                    print(totalVotes)
+                    
                     let rating = likes / totalVotes
-                    print(rating)
+                
                     let percentRating = "\(round(rating * 100)) % "
                     cell.percentRatingLabel.text = percentRating
                 }
@@ -83,7 +88,46 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     // Getting height for tableView
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return EstablishmentTableViewCell.expandedCellHeight
+        if indexPath == selectedIndexPath {
+            
+            return self.expandedCellHeight
+        } else {
+            return self.defaultCellHeight
+        }
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let previousIndexPath = selectedIndexPath
+        
+        if indexPath == selectedIndexPath {
+            selectedIndexPath = nil
+        } else {
+            selectedIndexPath = indexPath
+        }
+        
+        var indexPathsToReload = [NSIndexPath]()
+        if let previous = previousIndexPath {
+            indexPathsToReload += [previous]
+            
+        }
+        
+        if let current = selectedIndexPath {
+            indexPathsToReload += [current]
+        }
+        
+        if indexPathsToReload.count > 0 {
+            tableView.reloadRowsAtIndexPaths(indexPathsToReload, withRowAnimation: .Automatic)
+        }
+    }
+    
+    // MARK: TableView Observers
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        (cell as! EstablishmentTableViewCell).watchFrameChanges()
+    }
+    
+    override func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        (cell as! EstablishmentTableViewCell).ignoreFrameChanges()
     }
     
     

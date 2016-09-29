@@ -31,7 +31,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Setting the navigation bar to be colored with White contrasting font
         UINavigationBar.appearance().barTintColor = UIColor(red: 168/255, green: 3/255, blue: 3/255, alpha: 1)
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 19)!]
+        
+        
+        
+        //UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 16)! ], forState: .Normal)
+        
         
         // added view controller based status bar in info.plist
         application.statusBarStyle = .LightContent

@@ -18,6 +18,7 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
         
         navigationItem.title = "Request a Category"
         
+               
         handleContainerLayout()
         
         handleSubmitButtonLayout()
