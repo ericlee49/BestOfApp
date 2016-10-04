@@ -17,19 +17,19 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         
     }
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         didSet {
-            backgroundColor = highlighted ? UIColor(red: 168/255, green: 3/255, blue: 3/255, alpha: 1) : nil
-            nameLabel.textColor = highlighted ? UIColor.whiteColor() : UIColor.blackColor()
+            backgroundColor = isHighlighted ? UIColor(red: 168/255, green: 3/255, blue: 3/255, alpha: 1) : nil
+            nameLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
         }
     }
     
     // category ImageView
     let categoryImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .ScaleAspectFill
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 75
-        imageView.layer.borderColor = UIColor.grayColor().CGColor
+        imageView.layer.borderColor = UIColor.gray.cgColor
         imageView.layer.borderWidth = 1
         imageView.layer.masksToBounds = true
         
@@ -44,8 +44,8 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     }()
     
     let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 40, 40))
-        indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        let indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
     }()
@@ -64,21 +64,21 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         
         addSubview(nameLabel)
         
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[v0(150)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":categoryImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[v0(150)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":categoryImageView]))
         
         
-        addConstraint(NSLayoutConstraint(item: categoryImageView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0))
+        addConstraint(NSLayoutConstraint(item: categoryImageView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
         
-        addConstraint(NSLayoutConstraint(item: nameLabel, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0))
+        addConstraint(NSLayoutConstraint(item: nameLabel, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
         
         
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-17-[v0(150)]-4-[v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":categoryImageView, "v1":nameLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-17-[v0(150)]-4-[v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":categoryImageView, "v1":nameLabel]))
         
         // Adding indicator view
         addSubview(activityIndicator)
         // autolayouts for activity indicator
-        activityIndicator.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
-        activityIndicator.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
+        activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
         
         

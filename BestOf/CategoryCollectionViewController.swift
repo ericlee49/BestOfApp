@@ -36,19 +36,25 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         return barButton
     }()
     
+    let noTextBackItem: UIBarButtonItem = {
+        let barButton = UIBarButtonItem()
+        barButton.title = ""
+        return barButton
+    }()
+    
     let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 85, 85))
-        indicator.backgroundColor = UIColor.darkGrayColor()
+        let indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 85, height: 85))
+        indicator.backgroundColor = UIColor.darkGray
         indicator.layer.cornerRadius = 8
-        indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+        indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
         indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
     }()
     
     func setupActivityIndicator() {
         view.addSubview(activityIndicator)
-        activityIndicator.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
-        activityIndicator.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor).active = true
+        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         activityIndicator.startAnimating()
         
     }
@@ -60,15 +66,15 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         
         navigationItem.title = "BestOf Vancouver"
         
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        collectionView?.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        collectionView?.backgroundColor = UIColor(white: 0.9, alpha: 1)
         
         collectionView?.alwaysBounceVertical = true
         
-        collectionView?.registerClass(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: customCellIdentifier)
+        collectionView?.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: customCellIdentifier)
         
-        collectionView?.backgroundColor = UIColor.init(white: 0.9, alpha: 1)
+        //collectionView?.backgroundColor = UIColor.init(white: 0.9, alpha: 1)
         
         createNavigationBarSettingsButton()
         
@@ -86,7 +92,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         
 
         
-        categoryDatabaseRef.observeEventType(.ChildAdded, withBlock: { (snapshot) in
+        categoryDatabaseRef.observe(.childAdded, with: { (snapshot) in
             
             if let categoryDictionary = snapshot.value as? [String: AnyObject] {
                 
@@ -110,21 +116,21 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     let customCellIdentifier = "customCellIdentifier"
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let customCell = collectionView.dequeueReusableCellWithReuseIdentifier(customCellIdentifier, forIndexPath: indexPath) as! CategoryCollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let customCell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CategoryCollectionViewCell
         customCell.activityIndicator.startAnimating()
         
-        customCell.nameLabel.text = categoryArray[indexPath.item].name
+        customCell.nameLabel.text = categoryArray[(indexPath as NSIndexPath).item].name
         
-        if let categoryImageURL = categoryArray[indexPath.item].imageURL {
-            let url = NSURL(string: categoryImageURL)
-            NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler: { (data, response, error) in
+        if let categoryImageURL = categoryArray[(indexPath as NSIndexPath).item].imageURL {
+            let url = URL(string: categoryImageURL)
+            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
                 if error != nil {
                     print(error)
                     return
                 }
                 // got the image if we are here
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     customCell.categoryImageView.image = UIImage(data: data!)
                     self.activityIndicator.stopAnimating()
                     customCell.activityIndicator.stopAnimating()
@@ -140,23 +146,23 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
 
     
-    // MARK: CollectionView Spacing & Sizing & Delegate
+    // MARK: CollectionView DataSource
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return categoryArray.count
     }
     
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         // empty out establishmentsInCategory Array
         self.establishmentsInCategory.removeAll()
         
         // load establishment IDs into array
-        for (_, establishmentID) in categoryArray[indexPath.item].establishments! {
+        for (_, establishmentID) in categoryArray[(indexPath as NSIndexPath).item].establishments! {
             self.establishmentsInCategory.append(establishmentID as! String)
         }
         
-        let categoryName = categoryArray[indexPath.item].name
+        let categoryName = categoryArray[(indexPath as NSIndexPath).item].name
         navigationItem.backBarButtonItem = self.backItem
         
         let tableViewController = EstablishmentsInCategoryTableViewController()
@@ -170,15 +176,15 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     // Sizing & Spacing
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width/2 - 5 , height: collectionView.frame.width/2 - 10)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return CGFloat(5)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return CGFloat(5)
     }
     
@@ -191,9 +197,9 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     func createNavigationBarSettingsButton() {
         
-        let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(showSettingsView))
+        let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target: self, action: #selector(showSettingsView))
         navigationItem.rightBarButtonItem = settingsButton
-        settingsButton.tintColor = UIColor.lightGrayColor()
+        settingsButton.tintColor = UIColor.lightGray
     }
     
     lazy var settings: SettingsCollectionViewLaucher = {
@@ -217,15 +223,29 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         
     }
     
-    func showRequestController(setting: Setting) {
-
-//        let tempController = UIViewController()
-//        tempController.view.backgroundColor = UIColor.whiteColor()
-//        tempController.navigationItem.title = setting.name.rawValue
-//        navigationController?.pushViewController(tempController, animated: true)
-        navigationItem.backBarButtonItem = self.backItem
-        let categoryRequestViewController  = CategoryRequestViewController()
-        navigationController?.pushViewController(categoryRequestViewController, animated: true)
+    func showRequestController(_ setting: Setting) {
+        
+        if setting.name == Setting.SettingType.CategoryRequest {
+            navigationItem.backBarButtonItem = self.backItem
+            let categoryRequestViewController  = CategoryRequestViewController()
+            navigationController?.pushViewController(categoryRequestViewController, animated: true)
+            
+        } else if setting.name == Setting.SettingType.EstablishmentRequest {
+            var categoryNames = [String]()
+            
+            for category in self.categoryArray {
+                if let name = category.name {
+                    categoryNames.append(name)
+                }
+            }
+            
+            navigationItem.backBarButtonItem = self.noTextBackItem
+            let establishmentRequestViewController = EstablishmentRequestController()
+            establishmentRequestViewController.categoryNames = categoryNames
+            navigationController?.pushViewController(establishmentRequestViewController, animated: true)
+        } else {
+            return
+        }
         
     }
     
@@ -233,8 +253,6 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     // MARK: Login In Controller Pushed on Navigation Controller
     
     func showLoginViewController() {
-        
-
         
         navigationItem.backBarButtonItem = self.backItem
         

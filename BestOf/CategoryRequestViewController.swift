@@ -38,7 +38,7 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     // container view
     let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
         return view
@@ -47,13 +47,13 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     // submit request button
     lazy var submitButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor.blueColor()
-        button.setTitle("Submit", forState: .Normal)
-        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        button.setTitleColor(UIColor.lightGrayColor(), forState: UIControlState.Highlighted)
+        button.backgroundColor = UIColor.darkGray
+        button.setTitle("Submit", for: UIControlState())
+        button.setTitleColor(UIColor.white, for: UIControlState())
+        button.setTitleColor(UIColor.lightGray, for: UIControlState.highlighted)
         button.layer.cornerRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(handleSubmit), forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: #selector(handleSubmit), for: UIControlEvents.touchUpInside)
         return button
     }()
 
@@ -72,22 +72,20 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     let additionalComments: UITextView = {
         let textView = UITextView()
         textView.text = "Add additional comments here:"
-        textView.returnKeyType = UIReturnKeyType.Done
+        textView.returnKeyType = UIReturnKeyType.done
         //textView.backgroundColor = UIColor.blueColor()
-        textView.textColor = UIColor.lightGrayColor()
+        textView.textColor = UIColor.lightGray
         textView.font = UIFont(name: textView.font!.fontName, size: 18)
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
-    
-    // placeholder text for additional comments view
     
     
     
     // grey divider line between two textfields
     let dividerLine: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.lightGrayColor()
+        view.backgroundColor = UIColor.lightGray
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -98,31 +96,31 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
         
         view.addSubview(containerView)
         // x, y, height, width anchors:
-        containerView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
-        containerView.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor, constant: -50).active = true
-        containerView.heightAnchor.constraintEqualToConstant(200).active = true
-        containerView.widthAnchor.constraintEqualToAnchor(view.widthAnchor, multiplier: 1, constant: -20).active = true
+        containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        containerView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1, constant: -20).isActive = true
         
         containerView.addSubview(categoryName)
         // x, y, height, width anchors:
-        categoryName.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor, constant: 10).active = true
-        categoryName.topAnchor.constraintEqualToAnchor(containerView.topAnchor, constant: 0).active = true
-        categoryName.heightAnchor.constraintEqualToAnchor(containerView.heightAnchor, multiplier: 1/3, constant: 0).active = true
-        categoryName.widthAnchor.constraintEqualToAnchor(containerView.widthAnchor, multiplier: 1, constant: -5).active = true
+        categoryName.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 10).isActive = true
+        categoryName.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
+        categoryName.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1/3, constant: 0).isActive = true
+        categoryName.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 1, constant: -5).isActive = true
         
         containerView.addSubview(dividerLine)
         // x, y, height, width anchors:
-        dividerLine.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor, constant: 0).active = true
-        dividerLine.topAnchor.constraintEqualToAnchor(categoryName.bottomAnchor, constant: -2).active = true
-        dividerLine.heightAnchor.constraintEqualToConstant(0.75).active = true
-        dividerLine.widthAnchor.constraintEqualToAnchor(containerView.widthAnchor).active = true
+        dividerLine.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 0).isActive = true
+        dividerLine.topAnchor.constraint(equalTo: categoryName.bottomAnchor, constant: -2).isActive = true
+        dividerLine.heightAnchor.constraint(equalToConstant: 0.75).isActive = true
+        dividerLine.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         
         containerView.addSubview(additionalComments)
         // x, y, height, width anchors:
-        additionalComments.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor, constant: 8).active = true
-        additionalComments.topAnchor.constraintEqualToAnchor(categoryName.bottomAnchor, constant: 0).active = true
-        additionalComments.heightAnchor.constraintEqualToAnchor(containerView.heightAnchor, multiplier: 2/3, constant: 0).active = true
-        additionalComments.widthAnchor.constraintEqualToAnchor(containerView.widthAnchor, multiplier: 1, constant: -15).active = true
+        additionalComments.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
+        additionalComments.topAnchor.constraint(equalTo: categoryName.bottomAnchor, constant: 0).isActive = true
+        additionalComments.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 2/3, constant: 0).isActive = true
+        additionalComments.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 1, constant: -15).isActive = true
         
         
         
@@ -131,10 +129,10 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     func handleSubmitButtonLayout() {
         view.addSubview(submitButton)
         // x, y, height, width anchors:
-        submitButton.centerXAnchor.constraintEqualToAnchor(containerView.centerXAnchor).active = true
-        submitButton.topAnchor.constraintEqualToAnchor(containerView.bottomAnchor, constant: 10).active = true
-        submitButton.heightAnchor.constraintEqualToConstant(50).active = true
-        submitButton.widthAnchor.constraintEqualToAnchor(containerView.widthAnchor, multiplier: 1/2, constant: 1).active = true
+        submitButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+        submitButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 10).isActive = true
+        submitButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        submitButton.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 1/2, constant: 1).isActive = true
     }
     
     
@@ -146,7 +144,7 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
         let childRef = ref.child("categoryRequests")
         let requestReference = childRef.childByAutoId()
         
-        guard let category = categoryName.text, comments = additionalComments.text where !category.isEmpty && !comments.isEmpty else{
+        guard let category = categoryName.text, let comments = additionalComments.text , !category.isEmpty && !comments.isEmpty else{
             //FAILURE ALERT:
             print("failed to submit to firebase")
             return
@@ -167,7 +165,7 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     
     // MARK: TextField Delegate protocols
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField === self.categoryName {
             self.additionalComments.becomeFirstResponder()
             
@@ -178,17 +176,17 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     
     // MARK: TextView Delegate protocols
     
-    func textViewDidBeginEditing(textView: UITextView) {
-        if textView.textColor == UIColor.lightGrayColor() {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
             textView.text = nil
-            textView.textColor = UIColor.blackColor()
+            textView.textColor = UIColor.black
         }
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "Add additional comments here:"
-            textView.textColor = UIColor.lightGrayColor()
+            textView.textColor = UIColor.lightGray
         }
     }
     
@@ -197,11 +195,11 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     // MARK: helper methods
     
     func resignKeyboardWithTap() {
-        if self.categoryName.isFirstResponder() == true {
+        if self.categoryName.isFirstResponder == true {
             self.categoryName.resignFirstResponder()
             return
         }
-        if self.additionalComments.isFirstResponder() == true {
+        if self.additionalComments.isFirstResponder == true {
             self.additionalComments.resignFirstResponder()
             return
         }
@@ -210,12 +208,12 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     }
     
     func successAlert() {
-        let alert = UIAlertController(title: "Success", message: "Succesfully logged in", preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (alert: UIAlertAction) in
-            self.navigationController?.popViewControllerAnimated(true)
+        let alert = UIAlertController(title: "Success", message: "Succesfully logged in", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert: UIAlertAction) in
+            _ = self.navigationController?.popViewController(animated: true)
         }))
         
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
         
     }
 

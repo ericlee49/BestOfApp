@@ -18,7 +18,7 @@ class EstablishmentTableViewCell: UITableViewCell {
 
     // Initialization
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         addSubview(percentRatingLabel)
         
         setUpViews()
@@ -48,34 +48,34 @@ class EstablishmentTableViewCell: UITableViewCell {
     
     let priceRangeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFontOfSize(16)
+        label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     let addressLabel: UILabel = {
         let label = UILabel()
-        label.text = "325 Cambie St, Vancouver, BC V6B 1H7"
-        label.font = UIFont.systemFontOfSize(16)
+        label.text = "loading..."
+        label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     let phoneLabel: UILabel = {
         let label = UILabel()
-        label.text = "(604) 558-4444"
-        label.font = UIFont.systemFontOfSize(16)
+        label.text = "loading..."
+        label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     let likeButton: UIButton = {
-        let button = UIButton(type: .System)
-        button.setTitle("Like", forState: .Normal)
-        button.tintColor = UIColor.whiteColor()
-        button.backgroundColor = UIColor.grayColor()
+        let button = UIButton(type: .system)
+        button.setTitle("Like", for: UIControlState())
+        button.tintColor = UIColor.white
+        button.backgroundColor = UIColor.gray
         button.layer.cornerRadius = 4
-        button.titleLabel?.font = UIFont.boldSystemFontOfSize(16)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -83,12 +83,12 @@ class EstablishmentTableViewCell: UITableViewCell {
     }()
     
     let dislikeButton: UIButton = {
-        let button = UIButton(type: .System)
-        button.setTitle("Dislike", forState: .Normal)
-        button.tintColor = UIColor.whiteColor()
-        button.backgroundColor = UIColor.grayColor()
+        let button = UIButton(type: .system)
+        button.setTitle("Dislike", for: UIControlState())
+        button.tintColor = UIColor.white
+        button.backgroundColor = UIColor.gray
         button.layer.cornerRadius = 4
-        button.titleLabel?.font = UIFont.boldSystemFontOfSize(16)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -109,58 +109,58 @@ class EstablishmentTableViewCell: UITableViewCell {
         // name label autolayouts:
         // x, y, height, width anchors:
         addSubview(nameLabel)
-        nameLabel.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 10).active = true
-        nameLabel.topAnchor.constraintEqualToAnchor(self.topAnchor, constant: 10).active = true
+        nameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
+        nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         //nameLabel.heightAnchor.constraintEqualToConstant(25).active = true
         //nameLabel.widthAnchor.constraintEqualToConstant(80).active = true
         
         // price range label autolyaouts:
         // x, y, height, width anchors:
         addSubview(priceRangeLabel)
-        priceRangeLabel.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 10).active = true
-        priceRangeLabel.topAnchor.constraintEqualToAnchor(nameLabel.bottomAnchor, constant: 2).active = true
+        priceRangeLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
+        priceRangeLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2).isActive = true
         
         //address label autolyaouts:
         addSubview(addressLabel)
-        addressLabel.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
-        addressLabel.topAnchor.constraintEqualToAnchor(self.topAnchor, constant: EstablishmentTableViewCell.defaultCellHeight + 15).active = true
+        addressLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        addressLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: EstablishmentTableViewCell.defaultCellHeight + 15).isActive = true
         
         //address label autolyaouts:
         addSubview(phoneLabel)
-        phoneLabel.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
-        phoneLabel.topAnchor.constraintEqualToAnchor(addressLabel.bottomAnchor, constant: 10).active = true
+        phoneLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        phoneLabel.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 10).isActive = true
         
         // container view autolayouts
         addSubview(buttonContainerView)
-        buttonContainerView.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
-        buttonContainerView.topAnchor.constraintEqualToAnchor(phoneLabel.bottomAnchor, constant: 10).active = true
-        buttonContainerView.heightAnchor.constraintEqualToConstant(45).active = true
-        buttonContainerView.widthAnchor.constraintEqualToConstant(200).active = true
+        buttonContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        buttonContainerView.topAnchor.constraint(equalTo: phoneLabel.bottomAnchor, constant: 10).isActive = true
+        buttonContainerView.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        buttonContainerView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
         
         // like button autolyaouts:
         // x, y, height, width anchors:
         buttonContainerView.addSubview(likeButton)
-        likeButton.leftAnchor.constraintEqualToAnchor(buttonContainerView.leftAnchor, constant: 10).active = true
-        likeButton.topAnchor.constraintEqualToAnchor(buttonContainerView.topAnchor, constant: 5).active = true
-        likeButton.widthAnchor.constraintEqualToConstant(85).active = true
+        likeButton.leftAnchor.constraint(equalTo: buttonContainerView.leftAnchor, constant: 10).isActive = true
+        likeButton.topAnchor.constraint(equalTo: buttonContainerView.topAnchor, constant: 5).isActive = true
+        likeButton.widthAnchor.constraint(equalToConstant: 85).isActive = true
         
         
         // like button autolyaouts:
         // x, y, height, width anchors:
         buttonContainerView.addSubview(dislikeButton)
-        dislikeButton.rightAnchor.constraintEqualToAnchor(buttonContainerView.rightAnchor, constant: 10).active = true
-        dislikeButton.topAnchor.constraintEqualToAnchor(buttonContainerView.topAnchor, constant: 5).active = true
-        dislikeButton.widthAnchor.constraintEqualToConstant(85).active = true
+        dislikeButton.rightAnchor.constraint(equalTo: buttonContainerView.rightAnchor, constant: 10).isActive = true
+        dislikeButton.topAnchor.constraint(equalTo: buttonContainerView.topAnchor, constant: 5).isActive = true
+        dislikeButton.widthAnchor.constraint(equalToConstant: 85).isActive = true
         
         
         
         
         
         
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[v0]-15-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":percentRatingLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[v0]-15-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":percentRatingLabel]))
         
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-12-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":percentRatingLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":percentRatingLabel]))
         
     }
     
@@ -168,7 +168,7 @@ class EstablishmentTableViewCell: UITableViewCell {
     
     func watchFrameChanges() {
         if !isObserving {
-            addObserver(self, forKeyPath: "frame", options: [.New, .Initial], context: nil)
+            addObserver(self, forKeyPath: "frame", options: [.new, .initial], context: nil)
             isObserving = true
         }
     }
@@ -181,7 +181,7 @@ class EstablishmentTableViewCell: UITableViewCell {
     }
     
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "frame" {
             checkHeight()
         }
@@ -192,10 +192,16 @@ class EstablishmentTableViewCell: UITableViewCell {
     
     func checkHeight() {
         let booleanCheck = (frame.size.height < EstablishmentTableViewCell.expandedCellHeight)
-
-        addressLabel.hidden = booleanCheck
-        phoneLabel.hidden = booleanCheck
-        buttonContainerView.hidden = booleanCheck
+        
+        addressLabel.isHidden = booleanCheck
+        phoneLabel.isHidden = booleanCheck
+        buttonContainerView.isHidden = booleanCheck
+        
+        if booleanCheck {
+            self.backgroundColor = UIColor.white
+        } else {
+            self.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        }
         
     }
     

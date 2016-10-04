@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2E5444823A5ECE1FEF0646A5 /* Pods_BestOfTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 918A4297B58354E9CE0A5DDC /* Pods_BestOfTests.framework */; };
 		BE240F471D8F45AD00581DD8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE240F461D8F45AD00581DD8 /* GoogleService-Info.plist */; };
+		BE43D2A51DA1D1950019551C /* EstablishmentRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE43D2A41DA1D1950019551C /* EstablishmentRequestController.swift */; };
 		BE6603461D9501180023AF08 /* CategoryRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6603451D9501180023AF08 /* CategoryRequestViewController.swift */; };
 		BE7A129F1D6D6799006F438C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A129E1D6D6799006F438C /* AppDelegate.swift */; };
 		BE7A12A11D6D6799006F438C /* CategoryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12A01D6D6799006F438C /* CategoryCollectionViewController.swift */; };
@@ -42,6 +43,7 @@
 		67253361CA354143BBCB07F1 /* Pods-BestOf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOf.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestOf/Pods-BestOf.debug.xcconfig"; sourceTree = "<group>"; };
 		918A4297B58354E9CE0A5DDC /* Pods_BestOfTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestOfTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE240F461D8F45AD00581DD8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BE43D2A41DA1D1950019551C /* EstablishmentRequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EstablishmentRequestController.swift; sourceTree = "<group>"; };
 		BE6603451D9501180023AF08 /* CategoryRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRequestViewController.swift; sourceTree = "<group>"; };
 		BE7A129B1D6D6799006F438C /* BestOf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BestOf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7A129E1D6D6799006F438C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				BE7A12D01D87EA20006F438C /* CategoryCollectionViewCell.swift */,
 				BE7A12D21D8910D9006F438C /* LoginController.swift */,
 				BE6603451D9501180023AF08 /* CategoryRequestViewController.swift */,
+				BE43D2A41DA1D1950019551C /* EstablishmentRequestController.swift */,
 				BE7A12A51D6D6799006F438C /* Assets.xcassets */,
 				BE240F461D8F45AD00581DD8 /* GoogleService-Info.plist */,
 				BE7A12CE1D87E7AA006F438C /* Model */,
@@ -224,15 +227,18 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Erics App House";
 				TargetAttributes = {
 					BE7A129A1D6D6799006F438C = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = XUAD2J7TFS;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 					BE7A12AE1D6D6799006F438C = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 						TestTargetID = BE7A129A1D6D6799006F438C;
 					};
 				};
@@ -385,6 +391,7 @@
 				BE7A12CD1D86502A006F438C /* Setting.swift in Sources */,
 				BE7A12C31D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift in Sources */,
 				BE7A12D31D8910D9006F438C /* LoginController.swift in Sources */,
+				BE43D2A51DA1D1950019551C /* EstablishmentRequestController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,8 +439,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -478,8 +487,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -498,6 +509,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -508,11 +520,13 @@
 			baseConfigurationReference = 67253361CA354143BBCB07F1 /* Pods-BestOf.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = XUAD2J7TFS;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = BestOf/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = eric.z0r7.BestOf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -521,11 +535,13 @@
 			baseConfigurationReference = 05C7B59ED94309632005BD10 /* Pods-BestOf.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = XUAD2J7TFS;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = BestOf/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = eric.z0r7.BestOf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -534,10 +550,12 @@
 			baseConfigurationReference = DB08ABE9DC7B5DB14978E72F /* Pods-BestOfTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = BestOfTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = eric.z0r7.BestOfTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BestOf.app/BestOf";
 			};
 			name = Debug;
@@ -547,10 +565,12 @@
 			baseConfigurationReference = FEE0F9AB8D442A48238F3DEA /* Pods-BestOfTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = BestOfTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = eric.z0r7.BestOfTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BestOf.app/BestOf";
 			};
 			name = Release;

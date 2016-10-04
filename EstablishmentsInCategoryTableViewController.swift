@@ -15,17 +15,17 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     var establishments = [Establishment]()
     var categoryName: String?
     
-    var selectedIndexPath: NSIndexPath?
+    var selectedIndexPath: IndexPath?
     
     let defaultCellHeight = EstablishmentTableViewCell.defaultCellHeight
     let expandedCellHeight = EstablishmentTableViewCell.expandedCellHeight
     
-    private let cellId = "establishmentInCategoryTableCell"
+    fileprivate let cellId = "establishmentInCategoryTableCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.registerClass(EstablishmentTableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(EstablishmentTableViewCell.self, forCellReuseIdentifier: cellId)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -44,32 +44,34 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return establishmentIDs.count
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath) as! EstablishmentTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EstablishmentTableViewCell
         
-        let establishment = establishmentIDs[indexPath.row]
+        let establishment = establishmentIDs[(indexPath as NSIndexPath).row]
         let ref = FIRDatabase.database().reference().child("establishments").child(establishment)
-        ref.observeEventType(.Value, withBlock: {(snapshot) in
+        ref.observe(.value, with: {(snapshot) in
             
             if let dictionary = snapshot.value as? [String:AnyObject] {
+                // name label
                 cell.nameLabel.text = dictionary["name"] as? String
                 
+                // price range label
                 if let price = dictionary["priceRange"] as? String {
                     cell.priceRangeLabel.text = "Price Range: \(price)"
                 }
                 
-                
-                if let dislikes = dictionary["dislikes"] as? Double, likes = dictionary["likes"] as? Double {
+                // rating label
+                if let dislikes = dictionary["dislikes"] as? Double, let likes = dictionary["likes"] as? Double {
                     let totalVotes = dislikes + likes
                     
                     let rating = likes / totalVotes
@@ -78,16 +80,26 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
                     cell.percentRatingLabel.text = percentRating
                 }
                 
+                // address label
+                if let address = dictionary["address"] as? String {
+                    cell.addressLabel.text = address
+                }
+                
+                // phone label
+                if let phone = dictionary["phone"] as? String {
+                    cell.phoneLabel.text = phone
+                }
+                
             }
             
-        }, withCancelBlock: nil)
+        }, withCancel: nil)
         return cell
     }
     
     
     // Getting height for tableView
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath == selectedIndexPath {
             
             return self.expandedCellHeight
@@ -96,7 +108,7 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let previousIndexPath = selectedIndexPath
         
         if indexPath == selectedIndexPath {
@@ -105,7 +117,7 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
             selectedIndexPath = indexPath
         }
         
-        var indexPathsToReload = [NSIndexPath]()
+        var indexPathsToReload = [IndexPath]()
         if let previous = previousIndexPath {
             indexPathsToReload += [previous]
             
@@ -116,17 +128,17 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
         }
         
         if indexPathsToReload.count > 0 {
-            tableView.reloadRowsAtIndexPaths(indexPathsToReload, withRowAnimation: .Automatic)
+            tableView.reloadRows(at: indexPathsToReload, with: .automatic)
         }
     }
     
     // MARK: TableView Observers
     
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         (cell as! EstablishmentTableViewCell).watchFrameChanges()
     }
     
-    override func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         (cell as! EstablishmentTableViewCell).ignoreFrameChanges()
     }
     

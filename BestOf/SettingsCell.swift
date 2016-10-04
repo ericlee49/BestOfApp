@@ -11,11 +11,11 @@ import UIKit
 class SettingsCell: UICollectionViewCell {
     
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         didSet {
-            backgroundColor = highlighted ? UIColor.darkGrayColor() : UIColor.whiteColor()
-            nameLabel.textColor = highlighted ? UIColor.whiteColor() : UIColor.blackColor()
-            iconImageView.tintColor = highlighted ? UIColor.whiteColor() : UIColor.darkGrayColor()
+            backgroundColor = isHighlighted ? UIColor.darkGray : UIColor.white
+            nameLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
+            iconImageView.tintColor = isHighlighted ? UIColor.white : UIColor.darkGray
         }
     }
     
@@ -24,8 +24,8 @@ class SettingsCell: UICollectionViewCell {
             self.nameLabel.text = setting?.name.rawValue
             
             if let iconImage = setting?.imageName {
-                self.iconImageView.image = UIImage(named: iconImage)?.imageWithRenderingMode(.AlwaysTemplate)
-                self.iconImageView.tintColor = UIColor.darkGrayColor()
+                self.iconImageView.image = UIImage(named: iconImage)?.withRenderingMode(.alwaysTemplate)
+                self.iconImageView.tintColor = UIColor.darkGray
 
             }
             
@@ -47,7 +47,7 @@ class SettingsCell: UICollectionViewCell {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Settings Test"
-        label.font = UIFont.systemFontOfSize(16)
+        label.font = UIFont.systemFont(ofSize: 16)
         return label
     }()
     
@@ -55,7 +55,7 @@ class SettingsCell: UICollectionViewCell {
     let iconImageView: UIImageView = {
         let icon = UIImageView()
         icon.image = UIImage(named: "account")
-        icon.contentMode = .ScaleAspectFill
+        icon.contentMode = .scaleAspectFill
         return icon
     }()
     
@@ -65,19 +65,19 @@ class SettingsCell: UICollectionViewCell {
         
         addSubview(iconImageView)
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        iconImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
-        iconImageView.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
-        iconImageView.widthAnchor.constraintEqualToConstant(30).active = true
-        iconImageView.heightAnchor.constraintEqualToConstant(30).active = true
+        iconImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        iconImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        iconImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        iconImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         
         addSubview(nameLabel)
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         // x,y,width,height anchors
-        nameLabel.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: (8 + 25 + 15)).active = true
-        nameLabel.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
-        nameLabel.widthAnchor.constraintEqualToConstant(200).active = true
-        nameLabel.heightAnchor.constraintEqualToConstant(20).active = true
+        nameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: (8 + 25 + 15)).isActive = true
+        nameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        nameLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        nameLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
 }
