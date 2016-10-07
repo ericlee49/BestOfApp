@@ -112,7 +112,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func handleLogin() {
         self.resignFirstResponder()
         
-//        guard let
+//       guard let
 //            email = emailTextField.text,
 //            password = passwordTextField.text where !email.isEmpty && !password.isEmpty else {
 //                failureAlert()
@@ -194,7 +194,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     lazy var loginRegisterButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(red: 195/255, green: 3/255, blue: 3/255, alpha: 1)
+        button.backgroundColor = UIColor.gray
         button.setTitle("Register", for: UIControlState())
         button.setTitleColor(UIColor.white, for: UIControlState())
         button.layer.cornerRadius = 5

@@ -197,9 +197,11 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     func createNavigationBarSettingsButton() {
         
-        let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target: self, action: #selector(showSettingsView))
+//        let settingsButton = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target: self, action: #selector(showSettingsView))
+           let settingsButton = UIBarButtonItem(image: UIImage.init(named: "settings"), style: .plain, target: self, action: #selector(showSettingsView))
         navigationItem.rightBarButtonItem = settingsButton
-        settingsButton.tintColor = UIColor.lightGray
+     
+        //settingsButton.tintColor = UIColor.lightGray
     }
     
     lazy var settings: SettingsCollectionViewLaucher = {

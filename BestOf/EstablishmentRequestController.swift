@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -20,8 +21,6 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
         
         navigationItem.title = "Request an Establishment"
         
-        print(self.categoryNames)
-        
         setupView()
         
         setupTextFieldDelegates()
@@ -33,13 +32,9 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
         view.addGestureRecognizer(tapGesture)
         
         categoryName.delegate = self
+        
+        firebaseUserAuth()
 
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField === categoryName {
-            textField.text = categoryNames[0]
-        }
     }
     
     func resignKeyboardWithTap() {
@@ -66,32 +61,12 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
         // set the categoryName textfield's inputView from keyboard to category Picker
         categoryName.inputView = categoryPicker
         categoryName.inputAccessoryView = inputToolBar
-        
-        
-        /*
-        // autolayouts for picker bar
-        categoryPicker.addSubview(pickerBar)
-        
-        pickerBar.leftAnchor.constraint(equalTo: categoryPicker.leftAnchor).isActive = true
-        pickerBar.topAnchor.constraint(equalTo: categoryPicker.topAnchor).isActive = true
-        pickerBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        pickerBar.widthAnchor.constraint(equalTo: categoryPicker.widthAnchor).isActive = true
-        
-        pickerBar.addSubview(doneButton)
-        doneButton.rightAnchor.constraint(equalTo: pickerBar.rightAnchor).isActive = true
-        doneButton.topAnchor.constraint(equalTo: pickerBar.topAnchor).isActive = true
-        doneButton.widthAnchor.constraint(equalTo: pickerBar.widthAnchor, multiplier: 1/3).isActive = true
-        doneButton.heightAnchor.constraint(equalTo: pickerBar.heightAnchor).isActive = true
-        */
+
     }
     
     func donePicker() {
-        
         categoryName.resignFirstResponder()
-        
         commentsTextField.becomeFirstResponder()
-        
-        print("Done Done")
     }
     
     // MARK: Picker DataSource
@@ -115,6 +90,26 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
     
     // MARK: Textfield Delegate Protocols
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        textField.becomeFirstResponder()
+        if textField === categoryName {
+           let textIndexRow =  self.categoryPicker.selectedRow(inComponent: 0)
+           textField.text = categoryNames[textIndexRow]
+        }
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        if textField === self.establishmentName {
+            self.categoryName.becomeFirstResponder()
+            return true
+        }
+        
+        return true
+    }
     
     
     // MARK: Views
@@ -129,12 +124,13 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
     
     lazy var submitButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor.darkGray
+        button.backgroundColor = UIColor.gray
         button.setTitle("Submit", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(UIColor.darkGray, for: UIControlState.highlighted)
         button.layer.cornerRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(donePicker), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleSubmitRequest), for: .touchUpInside)
         return button
     }()
 
@@ -189,32 +185,6 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
         return picker
     }()
     
-    /*
-    
-    // Picker Bar view
-    let pickerBar: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.darkGray
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    
-    
-    
-    // Picker Bar Done button
-    lazy var doneButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Done", for: .normal)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.setTitleColor(UIColor.darkGray, for: .selected)
-        button.backgroundColor = UIColor.blue
-        button.addTarget(self, action: #selector(donePicker), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    */
     
     lazy var inputToolBar: UIToolbar = {
         var toolbar = UIToolbar()
@@ -222,9 +192,11 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
         toolbar.isTranslucent = true
         toolbar.sizeToFit()
         
-        var doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(donePicker))
         
-        toolbar.setItems([doneButton], animated: true)
+        var doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(donePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        
+        toolbar.setItems([spaceButton, doneButton], animated: true)
         toolbar.isUserInteractionEnabled = true
         
         return toolbar
@@ -242,8 +214,8 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
         // x, y, height, width autolayout constraints
         textFieldContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         textFieldContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -55).isActive = true
-        textFieldContainer.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -10).isActive = true
-        textFieldContainer.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        textFieldContainer.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -20).isActive = true
+        textFieldContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
         
         
         view.addSubview(submitButton)
@@ -287,11 +259,62 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
         dividerLineCategoryToComment.heightAnchor.constraint(equalToConstant: 0.75).isActive = true
         dividerLineCategoryToComment.widthAnchor.constraint(equalTo: textFieldContainer.widthAnchor).isActive = true
         
-        
-        
+    }
     
+    // MARK: FIREBASE
+    
+    func handleSubmitRequest() {
+        guard
+            let establishment = establishmentName.text,
+            let category = categoryName.text,
+            !establishment.isEmpty && !category.isEmpty else{
+                failureAlert()
+                return
+        }
+        
+        let ref = FIRDatabase.database().reference()
+        let childRef = ref.child("establishmentRequests")
+        let requestReference = childRef.childByAutoId()
+        let values: [String:String]
+        
+        if commentsTextField.text!.isEmpty {
+            values = [ "establishmentName:": establishment, "categoryName:": category, "comments": "None"]
+        } else {
+            values = [ "establishmentName:": establishment, "categoryName:": category, "comments": commentsTextField.text!]
+        }
+        
+        requestReference.updateChildValues(values) { (error, ref) in
+            if error != nil {
+                print(error)
+                return
+            }
+            
+            self.successAlert()
+        }
+        
+    }
+    
+    // MARK: Alerts
+    
+    func failureAlert() {
+        let alert = UIAlertController(title: "Incomplete", message: "Could not Submit Request", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Retry", style: .default, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     
+    func successAlert() {
+        let alert = UIAlertController(title: "Success", message: "Successfully submitted request", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert: UIAlertAction) in
+            _ = self.navigationController?.popViewController(animated: true)
+        }))
+        
+        
+        self.present(alert, animated: true, completion: nil)
+        
+        
+    }
+
     
 }

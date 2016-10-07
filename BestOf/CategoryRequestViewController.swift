@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
+class CategoryRequestViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +47,7 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     // submit request button
     lazy var submitButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor.darkGray
+        button.backgroundColor = UIColor.gray
         button.setTitle("Submit", for: UIControlState())
         button.setTitleColor(UIColor.white, for: UIControlState())
         button.setTitleColor(UIColor.lightGray, for: UIControlState.highlighted)
@@ -60,26 +60,20 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     // category name textfield
     let categoryName: UITextField = {
         let textfield = UITextField()
-        //textfield.backgroundColor = UIColor.greenColor()
         textfield.font = UIFont(name: "SFUIText-Regular", size: 18)
         textfield.placeholder = "Enter a category (e.g. Best milkshakes)"
         textfield.translatesAutoresizingMaskIntoConstraints = false
         return textfield
     }()
     
-    
-    // additional comments textView
-    let additionalComments: UITextView = {
-        let textView = UITextView()
-        textView.text = "Add additional comments here:"
-        textView.returnKeyType = UIReturnKeyType.done
-        //textView.backgroundColor = UIColor.blueColor()
-        textView.textColor = UIColor.lightGray
-        textView.font = UIFont(name: textView.font!.fontName, size: 18)
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        return textView
+    // comments textfield
+    let additionalComments: UITextField = {
+        let textfield = UITextField()
+        textfield.font = UIFont(name: "SFUIText-Regular", size: 18)
+        textfield.placeholder = "Add additional comments here:"
+        textfield.translatesAutoresizingMaskIntoConstraints = false
+        return textfield
     }()
-    
     
     
     // grey divider line between two textfields
@@ -98,14 +92,14 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
         // x, y, height, width anchors:
         containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: 130).isActive = true
         containerView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1, constant: -20).isActive = true
         
         containerView.addSubview(categoryName)
         // x, y, height, width anchors:
         categoryName.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 10).isActive = true
         categoryName.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
-        categoryName.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1/3, constant: 0).isActive = true
+        categoryName.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1/2, constant: 0).isActive = true
         categoryName.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 1, constant: -5).isActive = true
         
         containerView.addSubview(dividerLine)
@@ -117,10 +111,10 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
         
         containerView.addSubview(additionalComments)
         // x, y, height, width anchors:
-        additionalComments.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
+        additionalComments.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 10).isActive = true
         additionalComments.topAnchor.constraint(equalTo: categoryName.bottomAnchor, constant: 0).isActive = true
-        additionalComments.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 2/3, constant: 0).isActive = true
-        additionalComments.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 1, constant: -15).isActive = true
+        additionalComments.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1/2, constant: 0).isActive = true
+        additionalComments.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 1, constant: -5).isActive = true
         
         
         
@@ -166,28 +160,13 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
     // MARK: TextField Delegate protocols
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
         if textField === self.categoryName {
             self.additionalComments.becomeFirstResponder()
             
         }
         return true
-    }
-    
-    
-    // MARK: TextView Delegate protocols
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColor.lightGray {
-            textView.text = nil
-            textView.textColor = UIColor.black
-        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = "Add additional comments here:"
-            textView.textColor = UIColor.lightGray
-        }
     }
     
     
@@ -206,6 +185,8 @@ class CategoryRequestViewController: UIViewController, UITextViewDelegate, UITex
         
  
     }
+    
+    // MARK: Alerts
     
     func successAlert() {
         let alert = UIAlertController(title: "Success", message: "Succesfully logged in", preferredStyle: .alert)
