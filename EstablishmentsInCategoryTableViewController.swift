@@ -39,8 +39,85 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
         
         
         print(establishmentIDs)
+        loadEstablishments()
+        print("PRINTING ESTABLISHMENTS")
+        print(establishments)
+    }
+    
+    // MARK: Helper methods
+    
+    func loadEstablishments() {
+        print("Loading establishments from database to array")
+        
+        
+       
+        //DispatchQueue.global(qos: .background).async {
+            let establishmentsRef = FIRDatabase.database().reference().child("establishments")
+            for id in self.establishmentIDs {
+                DispatchQueue.global(qos: .background).async {
+                
+                establishmentsRef.child(id).observe(.value, with: { (snapshot) in
+                    
+                    if let dictionary = snapshot.value as? [String:AnyObject] {
+                        
+                        let name = dictionary["name"] as? String
+                        
+                        let price = dictionary["priceRange"] as? String
+                        
+                        let dislikes = dictionary["dislikes"] as? Double
+                        
+                        let likes = dictionary["likes"] as? Double
+                        
+                        let address = dictionary["address"] as? String
+                        
+                        let phone = dictionary["phone"] as? String
+                        
+                        let establishment = Establishment(name: name!, likes: likes!, dislikes: dislikes!, priceRange: price!, phone: phone!, address: address!)
+                        
+                        self.establishments.append(establishment)
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+            
+                        }
+                        
+                    }
+                    
+                })
+                    
+                }
+            }
+ 
+        //}
+        
+        
+    }
+    
+    func produceRating(_ likes:Double, _ dislikes:Double) -> String {
+        let totalVotes = dislikes + likes
+        let rating = likes / totalVotes
+        let percentRating = "\(round(rating * 100)) % "
+        return percentRating
     }
 
+    
+    func likeButtonAction() {
+        if let i = self.selectedIndexPath?.row {
+            print("Like this at index: \(i)")
+            self.establishments[i].likes += 1
+            self.tableView.reloadRows(at: [self.selectedIndexPath!], with: .automatic)
+
+        }
+        
+        //        let x = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
+//        x.likeButton.backgroundColor = UIColor.red
+        
+        
+        
+    }
+    
+    func dislikeButtonAction() {
+        print("Dislike")
+    }
 
     // MARK: - Table view data source
 
@@ -50,49 +127,61 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return establishmentIDs.count
+        return establishments.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EstablishmentTableViewCell
+////        
+//        let establishment = establishmentIDs[(indexPath as NSIndexPath).row]
+//        let ref = FIRDatabase.database().reference().child("establishments").child(establishment)
+//        ref.observe(.value, with: {(snapshot) in
+//            
+//            if let dictionary = snapshot.value as? [String:AnyObject] {
+//                // name label
+//                cell.nameLabel.text = dictionary["name"] as? String
+//                
+//                // price range label
+//                if let price = dictionary["priceRange"] as? String {
+//                    cell.priceRangeLabel.text = "Price Range: \(price)"
+//                }
+//                
+//                // rating label
+//                if let dislikes = dictionary["dislikes"] as? Double, let likes = dictionary["likes"] as? Double {
+//                    let totalVotes = dislikes + likes
+//                    
+//                    let rating = likes / totalVotes
+//                
+//                    let percentRating = "\(round(rating * 100)) % "
+//                    cell.percentRatingLabel.text = percentRating
+//                }
+//                
+//                // address label
+//                if let address = dictionary["address"] as? String {
+//                    cell.addressLabel.text = address
+//                }
+//                
+//                // phone label
+//                if let phone = dictionary["phone"] as? String {
+//                    cell.phoneLabel.text = phone
+//                }
+//                
+//            }
+//            
+//        }, withCancel: nil)
         
-        let establishment = establishmentIDs[(indexPath as NSIndexPath).row]
-        let ref = FIRDatabase.database().reference().child("establishments").child(establishment)
-        ref.observe(.value, with: {(snapshot) in
-            
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                // name label
-                cell.nameLabel.text = dictionary["name"] as? String
-                
-                // price range label
-                if let price = dictionary["priceRange"] as? String {
-                    cell.priceRangeLabel.text = "Price Range: \(price)"
-                }
-                
-                // rating label
-                if let dislikes = dictionary["dislikes"] as? Double, let likes = dictionary["likes"] as? Double {
-                    let totalVotes = dislikes + likes
-                    
-                    let rating = likes / totalVotes
-                
-                    let percentRating = "\(round(rating * 100)) % "
-                    cell.percentRatingLabel.text = percentRating
-                }
-                
-                // address label
-                if let address = dictionary["address"] as? String {
-                    cell.addressLabel.text = address
-                }
-                
-                // phone label
-                if let phone = dictionary["phone"] as? String {
-                    cell.phoneLabel.text = phone
-                }
-                
-            }
-            
-        }, withCancel: nil)
+        //Use the establishments array that was loaded at viewDidLoad
+        let establishment = establishments[(indexPath as NSIndexPath).row]
+        cell.nameLabel.text = establishment.name
+        cell.priceRangeLabel.text = "Price Range: \(establishment.priceRange)"
+        cell.percentRatingLabel.text = produceRating(establishment.likes, establishment.dislikes)
+        cell.addressLabel.text = establishment.address
+        cell.phoneLabel.text = establishment.phone
+        
+        cell.likeButton.addTarget(self, action: #selector(likeButtonAction), for: .touchUpInside)
+        
+        
         return cell
     }
     

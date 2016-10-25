@@ -11,6 +11,7 @@
 		BE240F471D8F45AD00581DD8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE240F461D8F45AD00581DD8 /* GoogleService-Info.plist */; };
 		BE43D2A51DA1D1950019551C /* EstablishmentRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE43D2A41DA1D1950019551C /* EstablishmentRequestController.swift */; };
 		BE6603461D9501180023AF08 /* CategoryRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6603451D9501180023AF08 /* CategoryRequestViewController.swift */; };
+		BE78F0551DACE22100DE859E /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE78F0541DACE22100DE859E /* Category.swift */; };
 		BE7A129F1D6D6799006F438C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A129E1D6D6799006F438C /* AppDelegate.swift */; };
 		BE7A12A11D6D6799006F438C /* CategoryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A12A01D6D6799006F438C /* CategoryCollectionViewController.swift */; };
 		BE7A12A61D6D6799006F438C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE7A12A51D6D6799006F438C /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 		BE240F461D8F45AD00581DD8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BE43D2A41DA1D1950019551C /* EstablishmentRequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EstablishmentRequestController.swift; sourceTree = "<group>"; };
 		BE6603451D9501180023AF08 /* CategoryRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRequestViewController.swift; sourceTree = "<group>"; };
+		BE78F0541DACE22100DE859E /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		BE7A129B1D6D6799006F438C /* BestOf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BestOf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7A129E1D6D6799006F438C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE7A12A01D6D6799006F438C /* CategoryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 		BE7A12CC1D86502A006F438C /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		BE7A12D01D87EA20006F438C /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		BE7A12D21D8910D9006F438C /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		BEC5FE271DADDBA500F5ECCE /* BestOf.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BestOf.entitlements; sourceTree = "<group>"; };
 		DB08ABE9DC7B5DB14978E72F /* Pods-BestOfTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOfTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestOfTests/Pods-BestOfTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FEE0F9AB8D442A48238F3DEA /* Pods-BestOfTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOfTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOfTests/Pods-BestOfTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,6 +122,7 @@
 		BE7A129D1D6D6799006F438C /* BestOf */ = {
 			isa = PBXGroup;
 			children = (
+				BEC5FE271DADDBA500F5ECCE /* BestOf.entitlements */,
 				BE7A12C21D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift */,
 				BE7A12C41D701652006F438C /* EstablishmentTableViewCell.swift */,
 				BE7A12C61D826F54006F438C /* SettingsCollectionViewLauncher.swift */,
@@ -149,6 +153,7 @@
 			children = (
 				BE7A12BE1D6ECE09006F438C /* Establishment.swift */,
 				BE7A12CC1D86502A006F438C /* Setting.swift */,
+				BE78F0541DACE22100DE859E /* Category.swift */,
 			);
 			name = Model;
 			path = ..;
@@ -234,6 +239,11 @@
 						CreatedOnToolsVersion = 7.3.1;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					BE7A12AE1D6D6799006F438C = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -389,6 +399,7 @@
 				BE7A12C71D826F54006F438C /* SettingsCollectionViewLauncher.swift in Sources */,
 				BE7A12C51D701652006F438C /* EstablishmentTableViewCell.swift in Sources */,
 				BE7A12CD1D86502A006F438C /* Setting.swift in Sources */,
+				BE78F0551DACE22100DE859E /* Category.swift in Sources */,
 				BE7A12C31D70159D006F438C /* EstablishmentsInCategoryTableViewController.swift in Sources */,
 				BE7A12D31D8910D9006F438C /* LoginController.swift in Sources */,
 				BE43D2A51DA1D1950019551C /* EstablishmentRequestController.swift in Sources */,
@@ -520,6 +531,7 @@
 			baseConfigurationReference = 67253361CA354143BBCB07F1 /* Pods-BestOf.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BestOf/BestOf.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = BestOf/Info.plist;
@@ -535,6 +547,7 @@
 			baseConfigurationReference = 05C7B59ED94309632005BD10 /* Pods-BestOf.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BestOf/BestOf.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = BestOf/Info.plist;

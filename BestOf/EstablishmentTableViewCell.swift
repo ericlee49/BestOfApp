@@ -78,6 +78,7 @@ class EstablishmentTableViewCell: UITableViewCell {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         
+        
         return button
         
     }()
@@ -205,8 +206,7 @@ class EstablishmentTableViewCell: UITableViewCell {
         
     }
     
-    
-    
+
     
     
     

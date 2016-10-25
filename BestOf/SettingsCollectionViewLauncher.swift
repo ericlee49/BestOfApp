@@ -155,11 +155,7 @@ class SettingsCollectionViewLaucher: NSObject, UICollectionViewDataSource, UICol
     override init() {
         super.init()
         
-        
-        
         self.settings = [loginLogOutSetting, categoryRequestSetting, establishmentRequestSetting, cancelSetting ]
-        
-        
         
         collectionView.dataSource = self
         collectionView.delegate = self

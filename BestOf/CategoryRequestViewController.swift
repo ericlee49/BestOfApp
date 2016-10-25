@@ -63,6 +63,7 @@ class CategoryRequestViewController: UIViewController, UITextFieldDelegate {
         textfield.font = UIFont(name: "SFUIText-Regular", size: 18)
         textfield.placeholder = "Enter a category (e.g. Best milkshakes)"
         textfield.translatesAutoresizingMaskIntoConstraints = false
+        
         return textfield
     }()
     

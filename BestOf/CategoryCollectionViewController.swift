@@ -10,18 +10,6 @@ import UIKit
 import Firebase
 
 
-
-// MARK: MODEL
-struct Category
-{
-    var name: String?
-    var imageURL: String?
-    var establishments: [String: AnyObject]?
-}
-
-
-
-
 // MARK: CONTROLLER
 class CategoryCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -93,21 +81,33 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
 
         
         categoryDatabaseRef.observe(.childAdded, with: { (snapshot) in
-            
+            DispatchQueue.global(qos: .background).async {
             if let categoryDictionary = snapshot.value as? [String: AnyObject] {
-                
-                let name = categoryDictionary["name"] as! String
-                let imageURL = categoryDictionary["imageURL"] as! String
-                let establishments = categoryDictionary["establishments"] as! [String: AnyObject]
-                
-                let category = Category(name: name, imageURL: imageURL, establishments: establishments)
-                
-                self.categoryArray.append(category)
+                    
+                    let name = categoryDictionary["name"] as! String
+                    let imageURL = categoryDictionary["imageURL"] as! String
+                    let establishments = categoryDictionary["establishments"] as! [String: AnyObject]
+                    var iconImage: UIImage = UIImage(named: "coffee")!
+                    if let url = URL(string: categoryDictionary["imageURL"] as! String) {
+                        if let data = NSData(contentsOf: url){
+                            iconImage = UIImage(data: data as Data)!
+                        }
+                    }
+                    
+                    let category = Category(name: name, imageURL: imageURL, imageIcon: iconImage, establishments: establishments)
+                    self.categoryArray.append(category)
 
-                self.collectionView?.reloadData()
-
+                    
+                    
+                    
+                    DispatchQueue.main.async {
+                        
+                        self.collectionView?.reloadData()
+                    }
+                
             }
-            
+                
+            }
         })
         
     }
@@ -120,26 +120,33 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         let customCell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CategoryCollectionViewCell
         customCell.activityIndicator.startAnimating()
         
-        customCell.nameLabel.text = categoryArray[(indexPath as NSIndexPath).item].name
+        let category = categoryArray[indexPath.item]
         
-        if let categoryImageURL = categoryArray[(indexPath as NSIndexPath).item].imageURL {
-            let url = URL(string: categoryImageURL)
-            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-                if error != nil {
-                    print(error)
-                    return
-                }
-                // got the image if we are here
-                DispatchQueue.main.async(execute: {
-                    customCell.categoryImageView.image = UIImage(data: data!)
-                    self.activityIndicator.stopAnimating()
-                    customCell.activityIndicator.stopAnimating()
-                })
-                
-                
-                
-            }).resume()
-        }
+        //customCell.nameLabel.text = categoryArray[(indexPath as NSIndexPath).item].name
+        customCell.nameLabel.text = category.name
+        
+//        if let categoryImageURL = categoryArray[(indexPath as NSIndexPath).item].imageURL {
+//            let url = URL(string: categoryImageURL)
+//            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+//                if error != nil {
+//                    print(error)
+//                    return
+//                }
+//                // got the image if we are here
+//                DispatchQueue.main.async(execute: {
+//                    customCell.categoryImageView.image = UIImage(data: data!)
+//                    self.activityIndicator.stopAnimating()
+//                    customCell.activityIndicator.stopAnimating()
+//                })
+//                
+//                
+//                
+//            }).resume()
+//        }
+        
+        customCell.categoryImageView.image = category.imageIcon
+        customCell.activityIndicator.stopAnimating()
+        self.activityIndicator.stopAnimating()
         
         return customCell
     }

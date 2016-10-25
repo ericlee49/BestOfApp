@@ -22,7 +22,7 @@ class Setting: NSObject {
     
     
     enum SettingType: String {
-        case Login = "Login"
+        case Login = "Login / Register"
         case Logout = "Log-Out"
         case CategoryRequest = "Request a Category"
         case EstablishmentRequest = "Request an Establishment"

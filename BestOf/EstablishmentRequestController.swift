@@ -13,6 +13,15 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
     
     var categoryNames = [String]()
     
+    let backItem: UIBarButtonItem = {
+        let barButton = UIBarButtonItem()
+        barButton.title = "Back"
+        return barButton
+    }()
+    
+    // USER ID:
+    var userID: String = ""
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -278,10 +287,11 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
         let values: [String:String]
         
         if commentsTextField.text!.isEmpty {
-            values = [ "establishmentName:": establishment, "categoryName:": category, "comments": "None"]
+            values = [ "establishmentName": establishment, "categoryName": category, "comments": "None", "user": userID]
         } else {
-            values = [ "establishmentName:": establishment, "categoryName:": category, "comments": commentsTextField.text!]
+            values = [ "establishmentName": establishment, "categoryName": category, "comments": commentsTextField.text!,"user": userID]
         }
+        
         
         requestReference.updateChildValues(values) { (error, ref) in
             if error != nil {
@@ -291,7 +301,19 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
             
             self.successAlert()
         }
-        
+    }
+    
+    func firebaseUserAuth() {
+        FIRAuth.auth()?.addStateDidChangeListener { auth, user in
+            if let user = user {
+                print("USER HERE:::::::::::")
+                print(user.uid)
+                self.userID = user.uid
+            } else {
+                self.loginRegisterAlert()
+                //return
+            }
+        }
     }
     
     // MARK: Alerts
@@ -310,11 +332,32 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
             _ = self.navigationController?.popViewController(animated: true)
         }))
         
-        
         self.present(alert, animated: true, completion: nil)
         
-        
     }
+    
+    
+    func loginRegisterAlert() {
+        let alert = UIAlertController(title: "Sorry!", message: "Please login/register before making a request", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert: UIAlertAction) in
+            self.showLoginViewController()
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    func showLoginViewController() {
+        
+        navigationItem.backBarButtonItem = self.backItem
+        
+        let loginViewController = LoginViewController()
+        //presentViewController(loginViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(loginViewController, animated: true)
+    }
+    
+
 
     
 }

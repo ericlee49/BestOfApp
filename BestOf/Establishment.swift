@@ -10,19 +10,24 @@ import UIKit
 
 
 
-class Establishment: NSObject {
+struct Establishment {
     
-    var name: String?
-    var likes = 0
-    var dislikes = 0
-    var priceRange: String?
+    var name: String
+    var likes: Double
+    var dislikes: Double
+    var priceRange: String
+    var phone: String
+    var address: String
     
     
     
-    init(name: String, priceRange: String) {
-        self.name = name
-        self.priceRange = priceRange
-    }
+//    init(name: String, priceRange: String, likes: Double, dislikes: Double, phone: String, address: String) {
+//        self.name = name
+//        self.priceRange = priceRange
+//        self.likes = likes
+//        self.dislikes = dislikes
+//
+//    }
 }
 
 
