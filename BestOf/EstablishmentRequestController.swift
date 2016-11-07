@@ -295,7 +295,7 @@ class EstablishmentRequestController: UIViewController, UITextFieldDelegate, UIP
         
         requestReference.updateChildValues(values) { (error, ref) in
             if error != nil {
-                print(error)
+                print(error!)
                 return
             }
             

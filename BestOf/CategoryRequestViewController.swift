@@ -149,7 +149,7 @@ class CategoryRequestViewController: UIViewController, UITextFieldDelegate {
         
         requestReference.updateChildValues(values) { (error, ref) in
             if error != nil {
-                print(error)
+                print(error!)
                 return
             }
             

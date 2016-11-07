@@ -128,7 +128,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
             if error != nil {
-                print(error)
+                print(error!)
                 return
             }
            
@@ -154,7 +154,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user:FIRUser?, error) in
             if error != nil {
-                print(error)
+                print(error!)
                 print("failed to create user in Firebase *******")
                 return
             }
@@ -168,7 +168,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let values = ["name": name, "email":email]
             usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
                 if err != nil {
-                    print(err)
+                    print(err!)
                     return
                 }
                 self.successAlert()

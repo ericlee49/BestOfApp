@@ -15,10 +15,17 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     var establishments = [Establishment]()
     var categoryName: String?
     
+    var establishmentDictionary = [String:String]()
+    
     var selectedIndexPath: IndexPath?
     
     let defaultCellHeight = EstablishmentTableViewCell.defaultCellHeight
     let expandedCellHeight = EstablishmentTableViewCell.expandedCellHeight
+    
+    var userAuthBool = false
+    
+    // USER ID:
+    var userID: String = ""
     
     fileprivate let cellId = "establishmentInCategoryTableCell"
     
@@ -37,24 +44,18 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
             self.navigationItem.title = name
         }
         
-        
-        print(establishmentIDs)
         loadEstablishments()
-        print("PRINTING ESTABLISHMENTS")
-        print(establishments)
+
+        firebaseUserAuth()
     }
     
     // MARK: Helper methods
     
     func loadEstablishments() {
-        print("Loading establishments from database to array")
-        
-        
        
-        //DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).async {
             let establishmentsRef = FIRDatabase.database().reference().child("establishments")
             for id in self.establishmentIDs {
-                DispatchQueue.global(qos: .background).async {
                 
                 establishmentsRef.child(id).observe(.value, with: { (snapshot) in
                     
@@ -72,6 +73,12 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
                         
                         let phone = dictionary["phone"] as? String
                         
+                        guard self.establishmentDictionary[name!] == nil else{
+                            return
+                        }
+                        
+                        self.establishmentDictionary[name!] = id
+                        
                         let establishment = Establishment(name: name!, likes: likes!, dislikes: dislikes!, priceRange: price!, phone: phone!, address: address!)
                         
                         self.establishments.append(establishment)
@@ -84,10 +91,10 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
                     
                 })
                     
-                }
+                
             }
  
-        //}
+        }
         
         
     }
@@ -101,24 +108,98 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
 
     
     func likeButtonAction() {
+        if !userAuthBool {
+            print("got to likebutton")
+            print("indexPath: \(self.selectedIndexPath?.row)")
+            self.loginRegisterAlert()
+            let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
+            cell.likeButton.backgroundColor = UIColor.gray
+            
+            return
+        }
+     
+        
+        
         if let i = self.selectedIndexPath?.row {
             print("Like this at index: \(i)")
             self.establishments[i].likes += 1
+            let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
+            cell.likeButton.backgroundColor = UIColor.gray
             self.tableView.reloadRows(at: [self.selectedIndexPath!], with: .automatic)
+            
+            let likes = self.establishments[i].likes + 1
+        
+            updateLike(i, likes)
 
         }
         
-        //        let x = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
-//        x.likeButton.backgroundColor = UIColor.red
-        
-        
-        
+    }
+    
+    func updateLike(_ establishmentIndex: Int, _ likes: Double){
+        let establishmentID = establishmentIDs[establishmentIndex]
+        let establishmentRef = FIRDatabase.database().reference().child("establishments").child(establishmentID)
+            //.child("likes")
+        //establishmentRef.setValue(likes)
+        establishmentRef.updateChildValues(["likes" : likes])
     }
     
     func dislikeButtonAction() {
-        print("Dislike")
+        if let i = self.selectedIndexPath?.row {
+            print("DisLike this at index: \(i)")
+            self.establishments[i].dislikes += 1
+            self.tableView.reloadRows(at: [self.selectedIndexPath!], with: .automatic)
+            
+        }
     }
+    
+    func changeButtonColor() {
+        let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
+        cell.likeButton.backgroundColor = UIColor(red: 168/255, green: 3/255, blue: 3/255, alpha: 1)
+    }
+    
+    
+    // Helper function to check if user has upvoted/downvoted:
+    func checkIfUserVotedForEstablishment(_ userID: String, _ estabID: String) -> Bool {
+        return true
+        // TODO:
+    }
+    
+    
 
+    
+    
+    
+    
+    func loginRegisterAlert() {
+        let alert = UIAlertController(title: "Sorry!", message: "Please login/register before liking/disliking", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert: UIAlertAction) in
+//            self.showLoginViewController()
+//        }))
+//        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert) in
+            print(alert)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: Firebase Auth
+    func firebaseUserAuth() {
+        
+        FIRAuth.auth()?.addStateDidChangeListener { auth, user in
+            if let user = user {
+                print("USER HERE:::::::::::")
+                print(user.uid)
+                self.userAuthBool = true
+            } else {
+                self.userAuthBool = false
+                
+                
+            }
+        }
+
+    }
+    
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -133,44 +214,7 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EstablishmentTableViewCell
-////        
-//        let establishment = establishmentIDs[(indexPath as NSIndexPath).row]
-//        let ref = FIRDatabase.database().reference().child("establishments").child(establishment)
-//        ref.observe(.value, with: {(snapshot) in
-//            
-//            if let dictionary = snapshot.value as? [String:AnyObject] {
-//                // name label
-//                cell.nameLabel.text = dictionary["name"] as? String
-//                
-//                // price range label
-//                if let price = dictionary["priceRange"] as? String {
-//                    cell.priceRangeLabel.text = "Price Range: \(price)"
-//                }
-//                
-//                // rating label
-//                if let dislikes = dictionary["dislikes"] as? Double, let likes = dictionary["likes"] as? Double {
-//                    let totalVotes = dislikes + likes
-//                    
-//                    let rating = likes / totalVotes
-//                
-//                    let percentRating = "\(round(rating * 100)) % "
-//                    cell.percentRatingLabel.text = percentRating
-//                }
-//                
-//                // address label
-//                if let address = dictionary["address"] as? String {
-//                    cell.addressLabel.text = address
-//                }
-//                
-//                // phone label
-//                if let phone = dictionary["phone"] as? String {
-//                    cell.phoneLabel.text = phone
-//                }
-//                
-//            }
-//            
-//        }, withCancel: nil)
-        
+
         //Use the establishments array that was loaded at viewDidLoad
         let establishment = establishments[(indexPath as NSIndexPath).row]
         cell.nameLabel.text = establishment.name
@@ -180,6 +224,8 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
         cell.phoneLabel.text = establishment.phone
         
         cell.likeButton.addTarget(self, action: #selector(likeButtonAction), for: .touchUpInside)
+        cell.likeButton.addTarget(self, action: #selector(changeButtonColor), for: .touchDown)
+        cell.dislikeButton.addTarget(self, action: #selector(dislikeButtonAction), for: .touchUpInside)
         
         
         return cell
