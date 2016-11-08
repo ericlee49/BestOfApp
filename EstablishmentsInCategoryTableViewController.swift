@@ -121,7 +121,7 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
         
     }
 
-    
+    // LIKE ACTION:
     func likeButtonAction() {
         if !userAuthBool {
             self.loginRegisterAlert()
@@ -151,7 +151,7 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
                     cell.likeButton.backgroundColor = UIColor.gray
                     self.tableView.reloadRows(at: [self.selectedIndexPath!], with: .automatic)
                     
-                    let likes = self.establishments[i].likes + 1
+                    let likes = self.establishments[i].likes
                     self.updateLike(i, likes)
                     
                     self.confirmVoteForUserOnDatabase(i, true)
@@ -159,10 +159,7 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
                 }
                 
             })
-
             
-
-
         }
         
     }
@@ -174,9 +171,8 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
         establishmentRef.updateChildValues(["likes" : likes])
     }
     
+    // DISLIKE ACTION:
     func dislikeButtonAction() {
-        
-        
         if !userAuthBool {
             self.loginRegisterAlert()
             let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
@@ -188,20 +184,35 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
         if let i = self.selectedIndexPath?.row {
             
             
-
-            
-            let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
-            cell.likeButton.backgroundColor = UIColor.gray
-            
-            self.establishments[i].dislikes += 1
-            self.tableView.reloadRows(at: [self.selectedIndexPath!], with: .automatic)
-            
-            let dislikes = self.establishments[i].dislikes + 1
-            updateDislike(i, dislikes)
-            
+            //check if user has voted for this establishment
+            let userRef = FIRDatabase.database().reference().child("users").child(userID).child("votedEstablishments")
+            userRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if snapshot.hasChild(self.establishmentIDs[i]){
+                    // user has already voted for this establishment
+                    let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
+                    cell.likeButton.backgroundColor = UIColor.lightGray
+                    cell.dislikeButton.backgroundColor = UIColor.lightGray
+                    print("Child exists")
+                    self.previousVoteAlert()
+                } else {
+                    self.establishments[i].dislikes += 1
+                    let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
+                    cell.dislikeButton.backgroundColor = UIColor.gray
+                    self.tableView.reloadRows(at: [self.selectedIndexPath!], with: .automatic)
+                    
+                    let dislikes = self.establishments[i].dislikes
+                    self.updateDislike(i, dislikes)
+                    
+                    self.confirmVoteForUserOnDatabase(i, false)
+                    
+                }
+                
+            })
         }
     }
     
+    //helper method for dislike Action
     func updateDislike(_ establishmentIndex: Int, _ dislikes: Double){
         let establishmentID = establishmentIDs[establishmentIndex]
         let establishmentRef = FIRDatabase.database().reference().child("establishments").child(establishmentID)
@@ -286,6 +297,7 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
         cell.likeButton.addTarget(self, action: #selector(likeButtonAction), for: .touchUpInside)
         cell.likeButton.addTarget(self, action: #selector(changeButtonColor), for: .touchDown)
         cell.dislikeButton.addTarget(self, action: #selector(dislikeButtonAction), for: .touchUpInside)
+        cell.dislikeButton.addTarget(self, action: #selector(changeButtonColor), for: .touchDown)
         
         
         return cell
