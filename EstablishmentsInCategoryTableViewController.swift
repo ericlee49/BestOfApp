@@ -105,12 +105,25 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
         let percentRating = "\(round(rating * 100)) % "
         return percentRating
     }
+    
+    // helper method to add establishment to user's voted list
+    func confirmVoteForUserOnDatabase(_ index:Int, _ like:Bool) {
+        guard !self.userID.isEmpty else{
+            return
+        }
+        let ref = FIRDatabase.database().reference()
+        print(self.userID)
+        if like {
+            ref.child("users").child(self.userID).child("votedEstablishments").child(self.establishmentIDs[index]).setValue("like")
+        } else {
+            ref.child("users").child(self.userID).child("votedEstablishments").child(self.establishmentIDs[index]).setValue("dislike")
+        }
+        
+    }
 
     
     func likeButtonAction() {
         if !userAuthBool {
-            print("got to likebutton")
-            print("indexPath: \(self.selectedIndexPath?.row)")
             self.loginRegisterAlert()
             let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
             cell.likeButton.backgroundColor = UIColor.gray
@@ -118,38 +131,81 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
             return
         }
      
-        
-        
         if let i = self.selectedIndexPath?.row {
-            print("Like this at index: \(i)")
-            self.establishments[i].likes += 1
-            let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
-            cell.likeButton.backgroundColor = UIColor.gray
-            self.tableView.reloadRows(at: [self.selectedIndexPath!], with: .automatic)
             
-            let likes = self.establishments[i].likes + 1
-        
-            updateLike(i, likes)
+            //check if user has voted for this establishment
+            let userRef = FIRDatabase.database().reference().child("users").child(userID).child("votedEstablishments")
+            userRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if snapshot.hasChild(self.establishmentIDs[i]){
+                    // user has already voted for this establishment
+                    let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
+                    cell.likeButton.backgroundColor = UIColor.lightGray
+                    cell.dislikeButton.backgroundColor = UIColor.lightGray
+                    print("Child exists")
+                    self.previousVoteAlert()
+                } else {
+                    print("NO child")
+                    self.establishments[i].likes += 1
+                    let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
+                    cell.likeButton.backgroundColor = UIColor.gray
+                    self.tableView.reloadRows(at: [self.selectedIndexPath!], with: .automatic)
+                    
+                    let likes = self.establishments[i].likes + 1
+                    self.updateLike(i, likes)
+                    
+                    self.confirmVoteForUserOnDatabase(i, true)
+                    
+                }
+                
+            })
+
+            
+
 
         }
         
     }
     
+    //helper method for like Action
     func updateLike(_ establishmentIndex: Int, _ likes: Double){
         let establishmentID = establishmentIDs[establishmentIndex]
         let establishmentRef = FIRDatabase.database().reference().child("establishments").child(establishmentID)
-            //.child("likes")
-        //establishmentRef.setValue(likes)
         establishmentRef.updateChildValues(["likes" : likes])
     }
     
     func dislikeButtonAction() {
+        
+        
+        if !userAuthBool {
+            self.loginRegisterAlert()
+            let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
+            cell.dislikeButton.backgroundColor = UIColor.gray
+            return
+        }
+        
+        
         if let i = self.selectedIndexPath?.row {
-            print("DisLike this at index: \(i)")
+            
+            
+
+            
+            let cell = self.tableView.cellForRow(at: self.selectedIndexPath!) as! EstablishmentTableViewCell
+            cell.likeButton.backgroundColor = UIColor.gray
+            
             self.establishments[i].dislikes += 1
             self.tableView.reloadRows(at: [self.selectedIndexPath!], with: .automatic)
             
+            let dislikes = self.establishments[i].dislikes + 1
+            updateDislike(i, dislikes)
+            
         }
+    }
+    
+    func updateDislike(_ establishmentIndex: Int, _ dislikes: Double){
+        let establishmentID = establishmentIDs[establishmentIndex]
+        let establishmentRef = FIRDatabase.database().reference().child("establishments").child(establishmentID)
+        establishmentRef.updateChildValues(["dislikes" : dislikes])
     }
     
     func changeButtonColor() {
@@ -158,11 +214,7 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     }
     
     
-    // Helper function to check if user has upvoted/downvoted:
-    func checkIfUserVotedForEstablishment(_ userID: String, _ estabID: String) -> Bool {
-        return true
-        // TODO:
-    }
+
     
     
 
@@ -172,14 +224,21 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     
     func loginRegisterAlert() {
         let alert = UIAlertController(title: "Sorry!", message: "Please login/register before liking/disliking", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert: UIAlertAction) in
-//            self.showLoginViewController()
-//        }))
-//        
+
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert) in
             print(alert)
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func previousVoteAlert() {
+        let alert = UIAlertController(title: "Sorry!", message: "You have already submitted a vote!", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert) in
+            print(alert)
+        }))
+        self.present(alert, animated: true, completion: nil)
+        
     }
     
     // MARK: Firebase Auth
@@ -190,6 +249,7 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
                 print("USER HERE:::::::::::")
                 print(user.uid)
                 self.userAuthBool = true
+                self.userID = user.uid
             } else {
                 self.userAuthBool = false
                 

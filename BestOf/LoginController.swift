@@ -165,7 +165,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             let ref = FIRDatabase.database().reference()
             let usersReference = ref.child("users").child(uid)
-            let values = ["name": name, "email":email]
+            let values = ["name": name, "email":email, "votedEstablishments/establishment" : "like"]
             usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
                 if err != nil {
                     print(err!)

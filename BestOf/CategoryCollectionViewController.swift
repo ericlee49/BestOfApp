@@ -81,7 +81,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
 
         
         categoryDatabaseRef.observe(.childAdded, with: { (snapshot) in
-            DispatchQueue.global(qos: .background).async {
+            
             if let categoryDictionary = snapshot.value as? [String: AnyObject] {
                     
                     let name = categoryDictionary["name"] as! String
@@ -107,7 +107,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
                 
             }
                 
-            }
+            
         })
         
     }
