@@ -12,6 +12,7 @@ import Firebase
 class EstablishmentsInCategoryTableViewController: UITableViewController {
 
     var establishmentIDs = [String]()
+    var sortedEstablishmentIDs = [String]()
     var establishments = [Establishment]()
     var categoryName: String?
     
@@ -49,6 +50,8 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
         firebaseUserAuth()
     }
     
+    
+    
     // MARK: Helper methods
     
     func loadEstablishments() {
@@ -79,11 +82,15 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
                         
                         self.establishmentDictionary[name!] = id
                         
-                        let establishment = Establishment(name: name!, likes: likes!, dislikes: dislikes!, priceRange: price!, phone: phone!, address: address!)
+                        let establishment = Establishment(name: name!, likes: likes!, dislikes: dislikes!, priceRange: price!, phone: phone!, address: address!, id: id)
                         
                         self.establishments.append(establishment)
+                        self.establishments.sort(by: { (e1, e2) -> Bool in
+                            (e1.likes / (e1.likes + e1.dislikes)) > (e2.likes / (e2.likes + e2.dislikes))
+                        })
                         DispatchQueue.main.async {
                             self.tableView.reloadData()
+                            print("back to main queue")
             
                         }
                         
@@ -93,8 +100,12 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
                     
                 
             }
+            
+
  
         }
+        
+        
         
         
     }
@@ -166,7 +177,8 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     
     //helper method for like Action
     func updateLike(_ establishmentIndex: Int, _ likes: Double){
-        let establishmentID = establishmentIDs[establishmentIndex]
+        //let establishmentID = establishmentIDs[establishmentIndex]
+        let establishmentID = establishments[establishmentIndex].id
         let establishmentRef = FIRDatabase.database().reference().child("establishments").child(establishmentID)
         establishmentRef.updateChildValues(["likes" : likes])
     }
@@ -214,7 +226,8 @@ class EstablishmentsInCategoryTableViewController: UITableViewController {
     
     //helper method for dislike Action
     func updateDislike(_ establishmentIndex: Int, _ dislikes: Double){
-        let establishmentID = establishmentIDs[establishmentIndex]
+        //let establishmentID = establishmentIDs[establishmentIndex]
+        let establishmentID = establishments[establishmentIndex].id
         let establishmentRef = FIRDatabase.database().reference().child("establishments").child(establishmentID)
         establishmentRef.updateChildValues(["dislikes" : dislikes])
     }

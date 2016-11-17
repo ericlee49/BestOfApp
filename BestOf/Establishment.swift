@@ -18,6 +18,7 @@ struct Establishment {
     var priceRange: String
     var phone: String
     var address: String
+    var id: String
     
     
     

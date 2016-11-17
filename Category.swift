@@ -13,7 +13,7 @@ struct Category
 {
     var name: String?
     var imageURL: String?
-    var imageIcon: UIImage?
+    //var imageIcon: UIImage?
     var establishments: [String: AnyObject]?
     
 }

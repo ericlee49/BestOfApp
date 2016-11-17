@@ -30,7 +30,18 @@ class CategoryRequestViewController: UIViewController, UITextFieldDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(resignKeyboardWithTap))
         view.addGestureRecognizer(tapGesture)
         
+        firebaseUserAuth()
+        
     }
+    
+    
+    var userID = ""
+    
+    let backItem: UIBarButtonItem = {
+        let barButton = UIBarButtonItem()
+        barButton.title = "Back"
+        return barButton
+    }()
     
     
     // MARK: Views
@@ -198,6 +209,42 @@ class CategoryRequestViewController: UIViewController, UITextFieldDelegate {
         self.present(alert, animated: true, completion: nil)
         
     }
+    
+    // MARK: Firebase AUTH:
+    func firebaseUserAuth() {
+        FIRAuth.auth()?.addStateDidChangeListener { auth, user in
+            if let user = user {
+                print("USER HERE:::::::::::")
+                print(user.uid)
+                self.userID = user.uid
+            } else {
+                self.loginRegisterAlert()
+                //return
+            }
+        }
+    }
+    
+    func loginRegisterAlert() {
+        let alert = UIAlertController(title: "Sorry!", message: "Please login/register before making a request", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert: UIAlertAction) in
+            self.showLoginViewController()
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    func showLoginViewController() {
+        
+        navigationItem.backBarButtonItem = self.backItem
+        
+        let loginViewController = LoginViewController()
+        //presentViewController(loginViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(loginViewController, animated: true)
+    }
+    
+    
 
 
     

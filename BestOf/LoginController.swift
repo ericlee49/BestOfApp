@@ -96,13 +96,25 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func successAlert() {
+    func successLoginAlert() {
         let alert = UIAlertController(title: "Success", message: "Succesfully logged in", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert: UIAlertAction) in
             _ = self.navigationController?.popViewController(animated: true)
         }))
         
 
+        self.present(alert, animated: true, completion: nil)
+        
+        
+    }
+    
+    func successLoginRegisterAlert() {
+        let alert = UIAlertController(title: "Success", message: "Succesfully registered & logged in", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert: UIAlertAction) in
+            _ = self.navigationController?.popViewController(animated: true)
+        }))
+        
+        
         self.present(alert, animated: true, completion: nil)
         
         
@@ -132,7 +144,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 return
             }
            
-            self.successAlert()
+            self.successLoginAlert()
             
             
         })
@@ -171,7 +183,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     print(err!)
                     return
                 }
-                self.successAlert()
+                self.successLoginRegisterAlert()
                 
                 print("Successfully saved user to Firebase db")
             })

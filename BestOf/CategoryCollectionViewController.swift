@@ -87,19 +87,19 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
                     let name = categoryDictionary["name"] as! String
                     let imageURL = categoryDictionary["imageURL"] as! String
                     let establishments = categoryDictionary["establishments"] as! [String: AnyObject]
-                    var iconImage: UIImage = UIImage(named: "coffee")!
-                    if let url = URL(string: categoryDictionary["imageURL"] as! String) {
-                        if let data = NSData(contentsOf: url){
-                            iconImage = UIImage(data: data as Data)!
-                        }
-                    }
-                    
-                    let category = Category(name: name, imageURL: imageURL, imageIcon: iconImage, establishments: establishments)
+//                    var iconImage: UIImage = UIImage(named: "coffee")!
+//                    if let url = URL(string: categoryDictionary["imageURL"] as! String) {
+//                        if let data = NSData(contentsOf: url){
+//                            iconImage = UIImage(data: data as Data)!
+//                        }
+//                    }
+                
+                
+                    let category = Category(name: name, imageURL: imageURL, establishments: establishments)
                     self.categoryArray.append(category)
-
+                
                     
-                    
-                    
+                
                     DispatchQueue.main.async {
                         
                         self.collectionView?.reloadData()
@@ -125,29 +125,28 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         //customCell.nameLabel.text = categoryArray[(indexPath as NSIndexPath).item].name
         customCell.nameLabel.text = category.name
         
-//        if let categoryImageURL = categoryArray[(indexPath as NSIndexPath).item].imageURL {
-//            let url = URL(string: categoryImageURL)
-//            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-//                if error != nil {
-//                    print(error)
-//                    return
-//                }
-//                // got the image if we are here
-//                DispatchQueue.main.async(execute: {
-//                    customCell.categoryImageView.image = UIImage(data: data!)
-//                    self.activityIndicator.stopAnimating()
-//                    customCell.activityIndicator.stopAnimating()
-//                })
-//                
-//                
-//                
-//            }).resume()
-//        }
-        
-        customCell.categoryImageView.image = category.imageIcon
-        customCell.activityIndicator.stopAnimating()
-        self.activityIndicator.stopAnimating()
-        
+        if let categoryImageURL = category.imageURL {
+            let url = URL(string: categoryImageURL)
+            
+            DispatchQueue.global(qos: .background).async {
+            
+            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
+                // got the image if we are here
+                DispatchQueue.main.async(execute: {
+                    customCell.categoryImageView.image = UIImage(data: data!)
+                    self.activityIndicator.stopAnimating()
+                    customCell.activityIndicator.stopAnimating()
+                })
+                
+            }).resume()
+                
+            }
+        }
+
         return customCell
     }
     
@@ -188,7 +187,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return CGFloat(5)
+        return CGFloat(20)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
